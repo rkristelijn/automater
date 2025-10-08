@@ -51,15 +51,21 @@ export async function createProject(projectName: string, options: CreateOptions)
 
   console.log(chalk.green(`✅ Project ${projectName} created successfully!`));
   
-  if (features) {
-    console.log(chalk.yellow(`📦 Adding features: ${features}`));
-    const featureList = features.split(',').map(f => f.trim());
-    
-    if (featureList.includes('mui')) {
+  // Apply default features (serverHardening, biome)
+  const defaultFeatures = ['serverHardening', 'biome'];
+  const customFeatures = features ? features.split(',').map(f => f.trim()) : [];
+  const allFeatures = [...defaultFeatures, ...customFeatures];
+  
+  console.log(chalk.yellow(`📦 Adding features: ${allFeatures.join(', ')}`));
+  
+  for (const feature of allFeatures) {
+    if (feature === 'serverHardening') {
+      await applyServerHardening(projectName);
+    } else if (feature === 'biome') {
+      await applyBiome(projectName);
+    } else if (feature === 'mui') {
       await installMUI(projectName);
-    }
-    
-    if (featureList.includes('mui-toolpad')) {
+    } else if (feature === 'mui-toolpad') {
       await installToolpad(projectName);
     }
   }
@@ -1224,6 +1230,86 @@ async function startDevServer(projectName: string, openBrowser: boolean): Promis
 
     child.on('error', (error) => {
       reject(error);
+    });
+  });
+}
+
+async function applyServerHardening(projectName: string): Promise<void> {
+  console.log(chalk.blue('🔒 Applying server hardening...'));
+  
+  try {
+    const fs = await import('fs');
+    
+    // Update next.config.ts to include security headers directly
+    const nextConfigPath = `${projectName}/next.config.ts`;
+    const nextConfigContent = await fs.promises.readFile(nextConfigPath, 'utf8');
+    
+    const updatedNextConfig = nextConfigContent.replace(
+      /const nextConfig: NextConfig = \{/,
+      `const nextConfig: NextConfig = {
+  poweredByHeader: false,
+  async headers() {
+    return [
+      {
+        source: '/(.*)',
+        headers: [
+          { key: 'X-Frame-Options', value: 'DENY' },
+          { key: 'X-Content-Type-Options', value: 'nosniff' },
+          { key: 'X-XSS-Protection', value: '1; mode=block' },
+          { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
+          { key: 'Permissions-Policy', value: 'camera=(), microphone=(), geolocation=()' },
+          { key: 'Cross-Origin-Resource-Policy', value: 'same-origin' },
+          { key: 'Content-Security-Policy', value: "default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self'; frame-ancestors 'none';" }
+        ]
+      }
+    ];
+  },`
+    );
+    
+    await fs.promises.writeFile(nextConfigPath, updatedNextConfig);
+    console.log(chalk.green('✅ Security headers configured in next.config.ts'));
+    console.log(chalk.green('✅ Server hardening applied successfully!'));
+  } catch (error) {
+    console.log(chalk.yellow('⚠️  Could not apply server hardening automatically.'));
+    console.log(error);
+  }
+}
+
+async function applyBiome(projectName: string): Promise<void> {
+  console.log(chalk.blue('🔧 Setting up Biome...'));
+  
+  return new Promise((resolve) => {
+    const installProcess = spawn('npm', ['install', '--save-dev', '@biomejs/biome'], {
+      cwd: projectName,
+      stdio: 'inherit'
+    });
+
+    installProcess.on('close', async (code) => {
+      if (code === 0) {
+        try {
+          const fs = await import('fs');
+          
+          const biomeConfig = {
+            "$schema": "https://biomejs.dev/schemas/1.8.3/schema.json",
+            "organizeImports": { "enabled": true },
+            "linter": { "enabled": true },
+            "formatter": { "enabled": true }
+          };
+          
+          await fs.promises.writeFile(`${projectName}/biome.json`, JSON.stringify(biomeConfig, null, 2));
+          console.log(chalk.green('✅ Biome configured successfully!'));
+        } catch (error) {
+          console.log(chalk.yellow('⚠️  Could not configure Biome automatically.'));
+        }
+      } else {
+        console.log(chalk.yellow('⚠️  Biome installation failed, continuing...'));
+      }
+      resolve();
+    });
+
+    installProcess.on('error', () => {
+      console.log(chalk.yellow('⚠️  Biome installation failed, continuing...'));
+      resolve();
     });
   });
 }

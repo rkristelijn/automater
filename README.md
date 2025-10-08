@@ -68,21 +68,27 @@ automater list features
 
 ## Supported Features
 
-### Styling & UI
-- **mui**: Material-UI with proper framework integration
-- **mui-toolpad**: MUI Toolpad for admin interfaces
-- **tailwind**: Tailwind CSS with framework-specific setup
-- **chakra**: Chakra UI components
+> 📖 **Complete reference**: See [OPTIONS_OVERVIEW.md](docs/OPTIONS_OVERVIEW.md) for detailed feature descriptions, sources, and compatibility matrix.
 
-### Code Quality
-- **biome**: Biome for linting and formatting (replaces ESLint + Prettier)
-- **eslint**: ESLint + Prettier setup
-- **husky**: Git hooks for code quality
+### Security & Quality ⭐
+- **serverHardening** *(Default)*: Production-ready security headers following [OWASP guidelines](https://owasp.org/www-project-secure-headers/)
+- **biome** *(Default)*: Fast Rust-based linter/formatter from [Biome project](https://biomejs.dev/)
+- **eslint**: Traditional ESLint + Prettier setup for teams requiring specific plugins
+- **husky**: Git hooks for code quality enforcement
+
+### Styling & UI
+- **mui**: Material-UI components with [official Next.js integration](https://mui.com/material-ui/integrations/nextjs/)
+- **mui-toolpad**: Low-code admin interface builder from [MUI Toolpad](https://mui.com/toolpad/)
+- **tailwind**: Utility-first CSS with [framework-specific setup](https://tailwindcss.com/docs/guides/nextjs)
+- **chakra**: Accessible React components from [Chakra UI](https://chakra-ui.com/)
 
 ### Deployment
-- **vercel**: Vercel deployment configuration
-- **netlify**: Netlify deployment setup
-- **cloudflare**: Cloudflare Pages integration
+- **vercel**: [Vercel platform](https://vercel.com/docs) deployment configuration
+- **netlify**: [Netlify](https://docs.netlify.com/) static site deployment
+- **cloudflare**: [Cloudflare Pages](https://developers.cloudflare.com/pages/) with Workers integration
+
+### Default Features
+All templates include **serverHardening** and **biome** by default for production readiness and optimal developer experience.
 
 ## How It Works
 

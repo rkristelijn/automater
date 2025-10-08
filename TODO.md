@@ -4,3 +4,23 @@
 - [ ] check all best practices, e.g. no customizations in component usage, only in theme
 - [ ] can we drop in another theme for the demo?
 - [ ] is the documentation in line and complete so noob devs can become haxors from this repo?
+- [ ] server hardening
+- [ ] create one theme option, with default mui themes and overridden bij accessesible colors
+- [ ] accessiblity check
+- [ ] add linting and tests as an option
+- [ ] include my own linting rules
+- [ ] test with biome 
+- [ ] add e2e tests with accessiblity chekcs
+- [ ] add github actions to check everything
+- [ ] add npm outdated, npm audit, npm licence checks
+- [ ] add security checks
+- [ ] add examples of generated code, that are removed on rerun
+- [ ] is it possible to schedule the pipeline for audit checks?
+- [ ] add all react best pracieses
+- [ ] add all nextjs best practices
+- [ ] add all mui best practices
+- [ ] add snackbar and notifictions
+- [ ] jest and vitest
+- [ ] options to choose for yarn, pnpm, and npm, i believe there are some best practices in package.json, see mui toolpad project
+- [ ] need to test if it actually deploys to cloudflare and runs there ok
+- [ ] there are still two css files generated, that should be an option
