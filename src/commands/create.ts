@@ -12,6 +12,13 @@ interface CreateOptions {
   git?: boolean;
   start?: boolean;
   open?: boolean;
+  eslint?: boolean;
+  tailwind?: boolean;
+  app?: boolean;
+  srcDir?: boolean;
+  importAlias?: string;
+  turbopack?: boolean;
+  mui?: boolean;
 }
 
 export async function createProject(projectName: string, options: CreateOptions): Promise<void> {
@@ -24,13 +31,20 @@ export async function createProject(projectName: string, options: CreateOptions)
     deploy = false,
     git = false,
     start = true,
-    open = true
+    open = true,
+    eslint = true,
+    tailwind = false,
+    app = true,
+    srcDir = true,
+    importAlias = '@/*',
+    turbopack = true,
+    mui = true
   } = options;
 
   console.log(chalk.blue(`🚀 Creating ${projectName} with ${template} template...`));
 
   if (template === 'nextjs') {
-    await createCloudflareNextJs(projectName, { framework, platform, typescript, deploy, git });
+    await createCloudflareNextJs(projectName, { framework, platform, typescript, deploy, git, start, open, eslint, tailwind, app, srcDir, importAlias, turbopack });
   } else {
     throw new Error(`Template "${template}" is not supported yet`);
   }
@@ -50,7 +64,7 @@ export async function createProject(projectName: string, options: CreateOptions)
 
 async function createCloudflareNextJs(
   projectName: string, 
-  options: { framework: string; platform: string; typescript: boolean; deploy: boolean; git: boolean }
+  options: { framework: string; platform: string; typescript: boolean; deploy: boolean; git: boolean; start: boolean; open: boolean; eslint: boolean; tailwind: boolean; app: boolean; srcDir: boolean; importAlias: string; turbopack: boolean }
 ): Promise<void> {
   return new Promise((resolve, reject) => {
     console.log(chalk.gray('Running: npx create-cloudflare@latest with configurable options'));
@@ -63,15 +77,15 @@ async function createCloudflareNextJs(
       options.deploy ? '--deploy' : '--no-deploy',
       options.git ? '--git' : '--no-git',
       '--',
-      '--typescript',
-      '--eslint',
-      '--tailwind',
-      '--app',
-      '--src-dir',
-      '--import-alias="@/*"',
-      '--turbopack',
+      options.typescript ? '--typescript' : '--javascript',
+      options.eslint ? '--eslint' : '--no-eslint',
+      options.tailwind ? '--tailwind' : '--no-tailwind',
+      options.app ? '--app' : '--no-app',
+      options.srcDir ? '--src-dir' : '--no-src-dir',
+      `--import-alias="${options.importAlias}"`,
+      options.turbopack ? '--turbopack' : '',
       '-y'
-    ];
+    ].filter(arg => arg !== '');
 
     const child = spawn('npx', args, {
       stdio: 'inherit',
