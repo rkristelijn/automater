@@ -53,7 +53,11 @@ export async function createProject(projectName: string, options: CreateOptions)
   
   if (features) {
     console.log(chalk.yellow(`📦 Adding features: ${features}`));
-    // TODO: Implement feature addition
+    const featureList = features.split(',').map(f => f.trim());
+    
+    if (featureList.includes('mui')) {
+      await installMUI(projectName);
+    }
   }
 
   if (start) {
@@ -104,6 +108,172 @@ async function createCloudflareNextJs(
       reject(error);
     });
   });
+}
+
+async function installMUI(projectName: string): Promise<void> {
+  return new Promise((resolve, reject) => {
+    console.log(chalk.blue('📦 Installing MUI packages...'));
+    
+    const installProcess = spawn('npm', ['install', '@mui/material', '@mui/material-nextjs', '@emotion/cache', '@emotion/styled'], {
+      cwd: projectName,
+      stdio: 'inherit'
+    });
+
+    installProcess.on('close', (code) => {
+      if (code === 0) {
+        console.log(chalk.green('✅ MUI packages installed successfully!'));
+        configureMUI(projectName).then(resolve).catch(reject);
+      } else {
+        reject(new Error(`MUI installation failed with code ${code}`));
+      }
+    });
+
+    installProcess.on('error', (error) => {
+      reject(error);
+    });
+  });
+}
+
+async function configureMUI(projectName: string): Promise<void> {
+  console.log(chalk.blue('⚙️  Configuring MUI...'));
+  
+  // Update app/layout.tsx to include AppRouterCacheProvider
+  const layoutPath = `${projectName}/src/app/layout.tsx`;
+  
+  try {
+    const fs = await import('fs');
+    const layoutContent = await fs.promises.readFile(layoutPath, 'utf8');
+    
+    const updatedLayout = layoutContent
+      .replace(
+        /import.*from ['"]next\/font\/google['"];?\n/,
+        `$&import { AppRouterCacheProvider } from '@mui/material-nextjs/v15-appRouter';\n`
+      )
+      .replace(
+        /<body[^>]*>/,
+        `$&\n        <AppRouterCacheProvider>`
+      )
+      .replace(
+        /{children}/,
+        `{children}\n        </AppRouterCacheProvider>`
+      );
+    
+    await fs.promises.writeFile(layoutPath, updatedLayout);
+    
+    // Create a simple MUI demo page
+    const demoPageContent = `'use client';
+import { Button, Typography, Box, Card, CardContent } from '@mui/material';
+
+export default function Home() {
+  return (
+    <Box sx={{ padding: 4 }}>
+      <Typography variant="h2" component="h1" gutterBottom>
+        Welcome to MUI + Next.js!
+      </Typography>
+      
+      <Card sx={{ maxWidth: 400, margin: '20px 0' }}>
+        <CardContent>
+          <Typography variant="h5" component="div">
+            MUI Demo Card
+          </Typography>
+          <Typography sx={{ mb: 1.5 }} color="text.secondary">
+            This is a simple Material-UI card component
+          </Typography>
+          <Button variant="contained" color="primary">
+            Click me!
+          </Button>
+        </CardContent>
+      </Card>
+      
+      <Box sx={{ mt: 2 }}>
+        <Button variant="outlined" sx={{ mr: 1 }}>
+          Outlined Button
+        </Button>
+        <Button variant="text">
+          Text Button
+        </Button>
+      </Box>
+    </Box>
+  );
+}`;
+    
+    await fs.promises.writeFile(`${projectName}/src/app/page.tsx`, demoPageContent);
+    
+    // Create custom README
+    const readmeContent = `# ${projectName}
+
+> Generated with [Automater](https://github.com/rkristelijn/automater)
+
+This project was scaffolded using Automater, following official documentation and best practices.
+
+## Tech Stack
+
+- **Framework**: Next.js 15 with App Router
+- **Platform**: Cloudflare Workers/Pages
+- **UI Library**: Material-UI (MUI) v6
+- **Styling**: Emotion (CSS-in-JS)
+- **Language**: TypeScript
+- **Package Manager**: npm
+
+## Getting Started
+
+### Development
+\`\`\`bash
+npm run dev
+\`\`\`
+
+### Build
+\`\`\`bash
+npm run build
+\`\`\`
+
+### Deploy
+\`\`\`bash
+npm run deploy
+\`\`\`
+
+## Standards & Best Practices
+
+This project follows official standards from:
+
+- [Next.js App Router](https://nextjs.org/docs/app) - Modern React framework
+- [MUI Integration Guide](https://mui.com/material-ui/integrations/nextjs/) - Material-UI with Next.js
+- [Cloudflare Pages](https://developers.cloudflare.com/pages/framework-guides/nextjs/) - Deployment platform
+- [TypeScript](https://www.typescriptlang.org/) - Type safety
+
+## Project Structure
+
+\`\`\`
+${projectName}/
+├── src/
+│   └── app/
+│       ├── layout.tsx    # Root layout with MUI provider
+│       └── page.tsx      # Homepage with MUI demo
+├── public/               # Static assets
+└── package.json         # Dependencies and scripts
+\`\`\`
+
+## MUI Configuration
+
+- AppRouterCacheProvider configured for SSR
+- Emotion styling engine
+- Material-UI components ready to use
+
+## Learn More
+
+- [Next.js Documentation](https://nextjs.org/docs)
+- [MUI Documentation](https://mui.com/)
+- [Cloudflare Pages Docs](https://developers.cloudflare.com/pages/)
+- [Automater GitHub](https://github.com/rkristelijn/automater)
+`;
+    
+    await fs.promises.writeFile(`${projectName}/README.md`, readmeContent);
+    
+    console.log(chalk.green('✅ MUI configured successfully with demo page and README!'));
+  } catch (error) {
+    console.log(chalk.yellow('⚠️  Could not automatically configure MUI. Please follow manual setup.'));
+    console.log(error);
+  }
 }
 
 async function startDevServer(projectName: string, openBrowser: boolean): Promise<void> {
