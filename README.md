@@ -27,13 +27,16 @@ pnpm add -g automater
 ### Create a New Project
 ```bash
 # Vite + React + TypeScript + MUI + Biome
-automater create my-app --template=vite-react --features=mui,biome
+automater create my-app --features=mui,biome
 
-# Next.js with MUI Toolpad
-automater create admin-app --template=nextjs --features=mui-toolpad
+# Next.js with MUI Toolpad in specific directory
+automater create projects/admin-app --features=mui-toolpad
 
-# Minimal Vite setup
-automater create simple-app
+# Create in tmp directory for testing
+automater create tmp/test-app
+
+# Start development server immediately and open browser
+automater create my-app --start --open
 ```
 
 ### Add Features to Existing Project
@@ -118,8 +121,8 @@ pnpm build
 pnpm dev
 
 # Test the CLI locally
-pnpm link
-automater --help
+pnpm build
+node dist/cli.js create tmp/test-app --start --open
 
 # Run tests
 pnpm test

@@ -17,7 +17,14 @@ program
   .argument('<project-name>', 'Name of the project to create')
   .option('--template <template>', 'Project template', 'nextjs')
   .option('--features <features>', 'Comma-separated list of features to add')
-  .action(async (projectName: string, options: { template?: string; features?: string }) => {
+  .option('--framework <framework>', 'Framework to use (next, react, vue, etc.)', 'next')
+  .option('--platform <platform>', 'Deployment platform (workers, pages)', 'pages')
+  .option('--no-typescript', 'Disable TypeScript')
+  .option('--start', 'Start development server after creation')
+  .option('--open', 'Open browser after starting (requires --start)')
+  .option('--deploy', 'Deploy immediately after creation')
+  .option('--git', 'Initialize git repository (disabled by default)')
+  .action(async (projectName: string, options: any) => {
     try {
       await createProject(projectName, options);
     } catch (error) {
