@@ -1,8 +1,10 @@
 # Automater
 
-> Scaffold modern web apps with best practices in seconds
+> Skip the setup, focus on the code - built for Hack Your Future
 
-Automater is a CLI tool that creates production-ready web applications following official documentation and best practices. No more copy-pasting setup guides or dealing with configuration conflicts.
+Automater is a CLI tool designed for [Hack Your Future](https://www.hackyourfuture.net/) participants to instantly create production-ready web applications. Skip the boring configuration and jump straight into the design-to-code feedback loop that matters most in real development work.
+
+While primarily built to support Hack Your Future assignments, Automater follows the Open-Closed Principle - stable core functionality that's easily extensible for other educational programs and use cases.
 
 ## What is Automater?
 
@@ -17,26 +19,19 @@ Think `npm create cloudflare@latest` but for any stack combination with intellig
 
 ## Quick Start
 
-### Installation
-```bash
-npm install -g automater
-# or
-pnpm add -g automater
-```
-
 ### Create a New Project
 ```bash
 # Vite + React + TypeScript + MUI + Biome
-automater create my-app --features=mui,biome
+npx automater create my-app --features=mui,biome
 
 # Next.js with MUI Toolpad in specific directory
-automater create projects/admin-app --features=mui-toolpad
+npx automater create projects/admin-app --features=mui-toolpad
 
 # Create in tmp directory for testing
-automater create tmp/test-app
+npx automater create tmp/test-app
 
 # Start development server immediately and open browser
-automater create my-app --start --open
+npx automater create my-app --start --open
 ```
 
 ### Add Features to Existing Project
@@ -89,6 +84,22 @@ automater list features
 
 ### Default Features
 All templates include **serverHardening** and **biome** by default for production readiness and optimal developer experience.
+
+## Coding Principles
+
+Automater follows essential development principles that help developers write clear, maintainable code:
+
+- **RTFM** (Respect The Framework's Model): Follow official documentation and framework conventions
+- **C4C** (Coding For Clarity): Write code that's easy to read and understand
+- **C4I** (Code for Inclusivity): Make your code accessible to new team members
+- **KISS** (Keep It Simple Stupid): Choose simplicity over cleverness
+- **YAGNI** (You Aren't Gonna Need It): Don't build features until they're needed
+- **HIPI** (Hide Implementation, Present Interface): Encapsulate complexity behind clear APIs
+- **NBI** (Naming by Intention): Use names that clearly express purpose and behavior
+
+Every generated project embeds these principles through code comments, structure, and tool choices.
+
+**[📖 More Information](docs/coding-principles.md)** - Detailed explanations, enterprise principles, SOLID, and 15-factor app guidelines.
 
 ## How It Works
 
@@ -188,6 +199,20 @@ We welcome contributions! Here's how to get started:
 - [ ] Interactive mode with prompts
 - [ ] Custom template creation
 - [ ] Plugin system
+
+## Support This Project
+
+This project is **free and open source**, but it wasn't free to build. If Automater saves you time and helps your development workflow, please consider supporting its continued development.
+
+**[💖 Sponsor on GitHub](https://github.com/sponsors/rkristelijn)**
+
+Your support helps:
+- Maintain and improve existing features
+- Add new templates and integrations
+- Provide community support
+- Keep the project sustainable
+
+Every contribution, no matter the size, makes a difference and is greatly appreciated! 🙏
 
 ## License
 
