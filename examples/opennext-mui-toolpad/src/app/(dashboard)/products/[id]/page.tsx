@@ -8,10 +8,11 @@ import Chip from '@mui/material/Chip';
 import Button from '@mui/material/Button';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import Link from 'next/link';
-import { mockProducts } from '../../data/mockData';
+import { mockProducts } from '@/data/mockData';
 
-export default function ProductDetailPage({ params }: { params: { id: string } }) {
-  const productId = parseInt(params.id);
+export default async function ProductDetailPage({ params }: { params: { id: string } }) {
+  const { id } = await params;
+  const productId = parseInt(id);
   const product = mockProducts.find(p => p.id === productId);
 
   if (!product) {

@@ -4,7 +4,7 @@ import Box from '@mui/material/Box';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import Link from 'next/link';
 import Chip from '@mui/material/Chip';
-import { mockCustomers } from '../data/mockData';
+import { mockCustomers } from '@/data/mockData';
 
 const columns: GridColDef[] = [
   {

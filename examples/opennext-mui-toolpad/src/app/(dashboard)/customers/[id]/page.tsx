@@ -8,10 +8,11 @@ import Chip from '@mui/material/Chip';
 import Button from '@mui/material/Button';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import Link from 'next/link';
-import { mockCustomers } from '../../data/mockData';
+import { mockCustomers } from '@/data/mockData';
 
-export default function CustomerDetailPage({ params }: { params: { id: string } }) {
-  const customerId = parseInt(params.id);
+export default async function CustomerDetailPage({ params }: { params: { id: string } }) {
+  const { id } = await params;
+  const customerId = parseInt(id);
   const customer = mockCustomers.find(c => c.id === customerId);
 
   if (!customer) {
