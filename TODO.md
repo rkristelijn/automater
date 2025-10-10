@@ -24,3 +24,4 @@
 - [ ] options to choose for yarn, pnpm, and npm, i believe there are some best practices in package.json, see mui toolpad project
 - [ ] need to test if it actually deploys to cloudflare and runs there ok
 - [ ] there are still two css files generated, that should be an option
+- [ ] it needs a search bar in the header in dashboard layout

@@ -224,23 +224,23 @@ This project was scaffolded using Automater, following official documentation an
 - **UI Library**: Material-UI (MUI) v6
 - **Styling**: Emotion (CSS-in-JS)
 - **Language**: TypeScript
-- **Package Manager**: npm
+- **Package Manager**: pnpm
 
 ## Getting Started
 
 ### Development
 \`\`\`bash
-npm run dev
+pnpm dev
 \`\`\`
 
 ### Build
 \`\`\`bash
-npm run build
+pnpm build
 \`\`\`
 
 ### Deploy
 \`\`\`bash
-npm run deploy
+pnpm deploy
 \`\`\`
 
 ## Standards & Best Practices
@@ -291,7 +291,7 @@ async function installToolpad(projectName: string): Promise<void> {
   return new Promise((resolve, reject) => {
     console.log(chalk.blue('📦 Installing MUI Toolpad packages...'));
     
-    const installProcess = spawn('npm', ['install', '@toolpad/core', '@mui/material', '@mui/icons-material', '@mui/x-data-grid', '@emotion/styled', '@emotion/cache', 'next-auth'], {
+    const installProcess = spawn('pnpm', ['add', '@toolpad/core', '@mui/material', '@mui/icons-material', '@mui/x-data-grid', '@emotion/styled', '@emotion/cache', '@mui/material-nextjs', 'next-auth'], {
       cwd: projectName,
       stdio: 'inherit'
     });
@@ -301,7 +301,7 @@ async function installToolpad(projectName: string): Promise<void> {
         console.log(chalk.green('✅ MUI Toolpad packages installed successfully!'));
         
         // Install dev dependencies
-        const devInstallProcess = spawn('npm', ['install', '--save-dev', '@types/next'], {
+        const devInstallProcess = spawn('pnpm', ['add', '-D', '@types/next'], {
           cwd: projectName,
           stdio: 'inherit'
         });
@@ -370,96 +370,17 @@ export const mockOrders = [
     // Create layout for dashboard
     const dashboardLayoutContent = `'use client';
 import * as React from 'react';
-import { AppProvider } from '@toolpad/core/AppProvider';
 import { DashboardLayout } from '@toolpad/core/DashboardLayout';
-import { PageContainer } from '@toolpad/core/PageContainer';
-import { usePathname, useRouter } from 'next/navigation';
-import DashboardIcon from '@mui/icons-material/Dashboard';
-import PeopleIcon from '@mui/icons-material/People';
-import InventoryIcon from '@mui/icons-material/Inventory';
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-
-const NAVIGATION = [
-  {
-    segment: 'dashboard',
-    title: 'Dashboard',
-    icon: <DashboardIcon />,
-  },
-  {
-    segment: 'customers',
-    title: 'Customers',
-    icon: <PeopleIcon />,
-  },
-  {
-    segment: 'products',
-    title: 'Products',
-    icon: <InventoryIcon />,
-  },
-  {
-    segment: 'orders',
-    title: 'Orders',
-    icon: <ShoppingCartIcon />,
-  },
-];
-
-const BRANDING = {
-  title: 'My Toolpad App',
-};
 
 export default function DashboardLayoutRoot({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const pathname = usePathname();
-  const router = useRouter();
-
   return (
-    <AppProvider 
-      navigation={NAVIGATION} 
-      branding={BRANDING}
-      router={{ 
-        pathname, 
-        searchParams: new URLSearchParams(), 
-        navigate: (path: string | URL) => router.push(path.toString()) 
-      }}
-    >
-      <DashboardLayout
-        sx={{
-          width: '100%',
-          height: '100%',
-          '& .MuiStack-root': {
-            width: '100%',
-            height: '100%',
-            maxWidth: 'none'
-          },
-          '& .MuiContainer-root': {
-            maxWidth: 'none !important',
-            width: '100% !important',
-            height: '100% !important'
-          }
-        }}
-      >
-        <PageContainer 
-          sx={{ 
-            height: '100%',
-            width: '100%',
-            maxWidth: 'none', // Override default maxWidth
-            padding: 0,       // Remove default padding
-            margin: 0,        // Remove default margin
-            display: 'flex',
-            flexDirection: 'column',
-            '& .MuiContainer-root': {
-              maxWidth: 'none !important',
-              padding: '0 !important',
-              width: '100% !important'
-            }
-          }}
-        >
-          {children}
-        </PageContainer>
-      </DashboardLayout>
-    </AppProvider>
+    <DashboardLayout>
+      {children}
+    </DashboardLayout>
   );
 }`;
     
@@ -471,51 +392,46 @@ import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
-import Grid from '@mui/material/Grid';
 
 export default function DashboardPage() {
   return (
-    <Box>
-      <Grid container spacing={3}>
-        <Grid size={{ xs: 12, sm: 6, md: 4 }}>
-          <Card>
-            <CardContent>
-              <Typography variant="h5" component="div">
-                Welcome to Toolpad
-              </Typography>
-              <Typography variant="body2">
-                This is your admin dashboard built with MUI Toolpad Core.
-              </Typography>
-            </CardContent>
-          </Card>
-        </Grid>
-        
-        <Grid size={{ xs: 12, sm: 6, md: 4 }}>
-          <Card>
-            <CardContent>
-              <Typography variant="h5" component="div">
-                Quick Stats
-              </Typography>
-              <Typography variant="body2">
-                Add your metrics and KPIs here.
-              </Typography>
-            </CardContent>
-          </Card>
-        </Grid>
-        
-        <Grid size={{ xs: 12, sm: 6, md: 4 }}>
-          <Card>
-            <CardContent>
-              <Typography variant="h5" component="div">
-                Recent Activity
-              </Typography>
-              <Typography variant="body2">
-                Show recent user activities or system events.
-              </Typography>
-            </CardContent>
-          </Card>
-        </Grid>
-      </Grid>
+    <Box sx={{ 
+      display: 'grid', 
+      gridTemplateColumns: { xs: '1fr', sm: 'repeat(2, 1fr)', md: 'repeat(3, 1fr)' },
+      gap: 3 
+    }}>
+      <Card>
+        <CardContent>
+          <Typography variant="h5" component="div">
+            Welcome to Toolpad
+          </Typography>
+          <Typography variant="body2">
+            This is your admin dashboard built with MUI Toolpad Core.
+          </Typography>
+        </CardContent>
+      </Card>
+      
+      <Card>
+        <CardContent>
+          <Typography variant="h5" component="div">
+            Quick Stats
+          </Typography>
+          <Typography variant="body2">
+            Add your metrics and KPIs here.
+          </Typography>
+        </CardContent>
+      </Card>
+      
+      <Card>
+        <CardContent>
+          <Typography variant="h5" component="div">
+            Recent Activity
+          </Typography>
+          <Typography variant="body2">
+            Show recent user activities or system events.
+          </Typography>
+        </CardContent>
+      </Card>
     </Box>
   );
 }`;
@@ -754,21 +670,18 @@ export default function CustomersPage() {
   return (
     <Box sx={{ height: 600, width: '100%' }}>
       <DataGrid
-      rows={mockCustomers}
-      columns={columns}
-      initialState={{
-        pagination: {
-          paginationModel: { page: 0, pageSize: 10 },
-        },
-      }}
-      pageSizeOptions={[10, 25, 50]}
-      checkboxSelection
-      disableRowSelectionOnClick
-      sx={{ 
-        height: 'calc(100vh - 120px)',
-        width: '100%'
-      }}
-    />
+        rows={mockCustomers}
+        columns={columns}
+        initialState={{
+          pagination: {
+            paginationModel: { page: 0, pageSize: 10 },
+          },
+        }}
+        pageSizeOptions={[10, 25, 50]}
+        checkboxSelection
+        disableRowSelectionOnClick
+      />
+    </Box>
   );
 }`;
     
@@ -830,22 +743,20 @@ const columns: GridColDef[] = [
 
 export default function ProductsPage() {
   return (
-    <DataGrid
-      rows={mockProducts}
-      columns={columns}
-      initialState={{
-        pagination: {
-          paginationModel: { page: 0, pageSize: 10 },
-        },
-      }}
-      pageSizeOptions={[10, 25, 50]}
-      checkboxSelection
-      disableRowSelectionOnClick
-      sx={{ 
-        height: 'calc(100vh - 120px)',
-        width: '100%'
-      }}
-    />
+    <Box sx={{ height: 600, width: '100%' }}>
+      <DataGrid
+        rows={mockProducts}
+        columns={columns}
+        initialState={{
+          pagination: {
+            paginationModel: { page: 0, pageSize: 10 },
+          },
+        }}
+        pageSizeOptions={[10, 25, 50]}
+        checkboxSelection
+        disableRowSelectionOnClick
+      />
+    </Box>
   );
 }`;
     
@@ -1106,27 +1017,77 @@ export default function Home() {
       console.log(chalk.yellow('⚠️  Could not update next.config.ts automatically.'));
     }
     
-    // Update root layout metadata
+    // Update root layout with NextAppProvider
     const rootLayoutPath = `${projectName}/src/app/layout.tsx`;
-    try {
-      const layoutContent = await fs.promises.readFile(rootLayoutPath, 'utf8');
-      
-      const updatedLayout = layoutContent.replace(
-        /title: ["']Create Next App["']/,
-        'title: "Toolpad Admin Dashboard"'
-      ).replace(
-        /description: ["']Generated by create next app["']/,
-        'description: "Admin interface built with MUI Toolpad Core"'
-      ).replace(
-        /<html lang="en">/,
-        '<html lang="en" suppressHydrationWarning>'
-      );
-      
-      await fs.promises.writeFile(rootLayoutPath, updatedLayout);
-      console.log(chalk.green('✅ Root layout metadata updated!'));
-    } catch (error) {
-      console.log(chalk.yellow('⚠️  Could not update root layout metadata automatically.'));
-    }
+    const rootLayoutContent = `import type { Metadata } from "next";
+import { Geist, Geist_Mono } from "next/font/google";
+import { NextAppProvider } from '@toolpad/core/nextjs';
+import { AppRouterCacheProvider } from '@mui/material-nextjs/v15-appRouter';
+import DashboardIcon from '@mui/icons-material/Dashboard';
+import PeopleIcon from '@mui/icons-material/People';
+import InventoryIcon from '@mui/icons-material/Inventory';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import type { Navigation } from '@toolpad/core/AppProvider';
+import { theme } from '@/theme/theme';
+
+const geistSans = Geist({
+  variable: "--font-geist-sans",
+  subsets: ["latin"],
+});
+
+const geistMono = Geist_Mono({
+  variable: "--font-geist-mono",
+  subsets: ["latin"],
+});
+
+export const metadata: Metadata = {
+  title: "Toolpad Admin Dashboard",
+  description: "Admin interface built with MUI Toolpad Core",
+};
+
+const NAVIGATION: Navigation = [
+  {
+    segment: 'dashboard',
+    title: 'Dashboard',
+    icon: <DashboardIcon />,
+  },
+  {
+    segment: 'customers',
+    title: 'Customers',
+    icon: <PeopleIcon />,
+  },
+  {
+    segment: 'products',
+    title: 'Products',
+    icon: <InventoryIcon />,
+  },
+  {
+    segment: 'orders',
+    title: 'Orders',
+    icon: <ShoppingCartIcon />,
+  },
+];
+
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
+  return (
+    <html lang="en" suppressHydrationWarning>
+      <body className={\`\${geistSans.variable} \${geistMono.variable}\`}>
+        <AppRouterCacheProvider options={{ enableCssLayer: true }}>
+          <NextAppProvider navigation={NAVIGATION}>
+            {children}
+          </NextAppProvider>
+        </AppRouterCacheProvider>
+      </body>
+    </html>
+  );
+}`;
+    
+    await fs.promises.writeFile(rootLayoutPath, rootLayoutContent);
+    console.log(chalk.green('✅ Root layout updated with NextAppProvider!'));
     
     // Remove unnecessary CSS files - Best practice: Use MUI's styling system instead of global CSS
     // Reference: https://mui.com/material-ui/integrations/nextjs/
@@ -1151,13 +1112,13 @@ This project was scaffolded using Automater with MUI Toolpad Core for admin inte
 - **UI Library**: Material-UI (MUI) v6
 - **Authentication**: NextAuth.js with GitHub provider
 - **Language**: TypeScript
-- **Package Manager**: npm
+- **Package Manager**: pnpm
 
 ## Getting Started
 
 ### Development
 \`\`\`bash
-npm run dev
+pnpm dev
 \`\`\`
 
 Visit:
@@ -1166,12 +1127,12 @@ Visit:
 
 ### Build
 \`\`\`bash
-npm run build
+pnpm build
 \`\`\`
 
 ### Deploy
 \`\`\`bash
-npm run deploy
+pnpm deploy
 \`\`\`
 
 ## Features

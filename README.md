@@ -106,6 +106,8 @@ Every generated project embeds these principles through code comments, structure
 
 **[📖 More Information](docs/coding-principles.md)** - Detailed explanations, enterprise principles, SOLID, and 15-factor app guidelines.
 
+**[🔧 Toolpad Best Practices](docs/toolpad-best-practices.md)** - Essential patterns for MUI Toolpad implementation based on official examples.
+
 ## How It Works
 
 ### Conflict Resolution
