@@ -424,8 +424,38 @@ export default function DashboardLayoutRoot({
         navigate: (path: string | URL) => router.push(path.toString()) 
       }}
     >
-      <DashboardLayout>
-        <PageContainer>
+      <DashboardLayout
+        sx={{
+          width: '100%',
+          height: '100%',
+          '& .MuiStack-root': {
+            width: '100%',
+            height: '100%',
+            maxWidth: 'none'
+          },
+          '& .MuiContainer-root': {
+            maxWidth: 'none !important',
+            width: '100% !important',
+            height: '100% !important'
+          }
+        }}
+      >
+        <PageContainer 
+          sx={{ 
+            height: '100%',
+            width: '100%',
+            maxWidth: 'none', // Override default maxWidth
+            padding: 0,       // Remove default padding
+            margin: 0,        // Remove default margin
+            display: 'flex',
+            flexDirection: 'column',
+            '& .MuiContainer-root': {
+              maxWidth: 'none !important',
+              padding: '0 !important',
+              width: '100% !important'
+            }
+          }}
+        >
           {children}
         </PageContainer>
       </DashboardLayout>
@@ -722,7 +752,8 @@ const columns: GridColDef[] = [
 
 export default function CustomersPage() {
   return (
-    <DataGrid
+    <Box sx={{ height: 600, width: '100%' }}>
+      <DataGrid
       rows={mockCustomers}
       columns={columns}
       initialState={{

@@ -8,9 +8,9 @@
   },
   "scripts": {
     "build": "tsc",
-    "dev": "tsc --watch",
     "start": "node dist/cli.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "cd examples/opennext-mui-toolpad && pnpm dev"
   },
   "keywords": [
     "cli",

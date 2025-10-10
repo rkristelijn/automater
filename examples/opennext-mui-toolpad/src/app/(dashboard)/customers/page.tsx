@@ -47,21 +47,19 @@ const columns: GridColDef[] = [
 
 export default function CustomersPage() {
   return (
-    <DataGrid
-      rows={mockCustomers}
-      columns={columns}
-      initialState={{
-        pagination: {
-          paginationModel: { page: 0, pageSize: 10 },
-        },
-      }}
-      pageSizeOptions={[10, 25, 50]}
-      checkboxSelection
-      disableRowSelectionOnClick
-      sx={{ 
-        height: 'calc(100vh - 120px)',
-        width: '100%'
-      }}
-    />
+    <Box sx={{ height: 600, width: '100%' }}>
+      <DataGrid
+        rows={mockCustomers}
+        columns={columns}
+        initialState={{
+          pagination: {
+            paginationModel: { page: 0, pageSize: 10 },
+          },
+        }}
+        pageSizeOptions={[10, 25, 50]}
+        checkboxSelection
+        disableRowSelectionOnClick
+      />
+    </Box>
   );
 }
