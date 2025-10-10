@@ -25,7 +25,7 @@ These principles help any developer write code that's clear, maintainable, and w
 ### C4I (Code for Inclusivity)
 **Make your code accessible to new team members.**
 
-- Keep folder structure logical (features together, not types together)
+- Keep folder structure logical (features together first, then think of types together, it just scales better)
 - Make code "greppable" - searchable with simple text search
 - Document what's necessary, not everything
 

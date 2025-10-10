@@ -6,6 +6,9 @@ Automater is a CLI tool designed for [Hack Your Future](https://www.hackyourfutu
 
 While primarily built to support Hack Your Future assignments, Automater follows the Open-Closed Principle - stable core functionality that's easily extensible for other educational programs and use cases.
 
+## What is Hack Your Future?
+[![Hack Your Future](https://img.youtube.com/vi/1D_qK6jWNAM/0.jpg)](https://www.youtube.com/watch?v=1D_qK6jWNAM)]
+
 ## What is Automater?
 
 Automater solves the "blank page problem" for developers by providing:
@@ -70,6 +73,8 @@ automater list features
 - **biome** *(Default)*: Fast Rust-based linter/formatter from [Biome project](https://biomejs.dev/)
 - **eslint**: Traditional ESLint + Prettier setup for teams requiring specific plugins
 - **husky**: Git hooks for code quality enforcement
+
+**[🔒 Security Best Practices](docs/security-best-practices.md)** - Detailed security implementation and verification guide.
 
 ### Styling & UI
 - **mui**: Material-UI components with [official Next.js integration](https://mui.com/material-ui/integrations/nextjs/)

@@ -1,5 +1,6 @@
 import { spawn } from 'child_process';
 import { exec } from 'child_process';
+import * as fs from 'fs';
 import chalk from 'chalk';
 
 interface CreateOptions {
@@ -357,11 +358,11 @@ export const mockProducts = [
 ];
 
 export const mockOrders = [
-  { id: 1, customer: 'John Doe', product: 'MacBook Pro 16" M3 Max', amount: 3499.00, status: 'Completed', date: '2024-01-15' },
-  { id: 2, customer: 'Jane Smith', product: 'Lily58 Pro Keyboard Kit', amount: 149.50, status: 'Pending', date: '2024-01-14' },
-  { id: 3, customer: 'Bob Johnson', product: 'Samsung Odyssey G9 49" Ultrawide', amount: 1299.99, status: 'Shipped', date: '2024-01-13' },
-  { id: 4, customer: 'Alice Brown', product: 'iPhone 15 Pro Max 1TB', amount: 1599.00, status: 'Completed', date: '2024-01-12' },
-  { id: 5, customer: 'Charlie Wilson', product: 'AirPods Pro 2nd Gen', amount: 249.00, status: 'Shipped', date: '2024-01-11' },
+  { id: 1, customer: 'John Doe', product: 'MacBook Pro 16" M3 Max', amount: 3499.00, status: 'Completed', date: '2024-01-15', email: 'john.doe@email.com', address: '123 Main St, New York, NY 10001' },
+  { id: 2, customer: 'Jane Smith', product: 'Lily58 Pro Keyboard Kit', amount: 149.50, status: 'Pending', date: '2024-01-14', email: 'jane.smith@email.com', address: '456 Oak Ave, Los Angeles, CA 90210' },
+  { id: 3, customer: 'Bob Johnson', product: 'Samsung Odyssey G9 49" Ultrawide', amount: 1299.99, status: 'Shipped', date: '2024-01-13', email: 'bob.johnson@email.com', address: '789 Pine Rd, Chicago, IL 60601' },
+  { id: 4, customer: 'Alice Brown', product: 'iPhone 15 Pro Max 1TB', amount: 1599.00, status: 'Completed', date: '2024-01-12', email: 'alice.brown@email.com', address: '321 Elm St, Miami, FL 33101' },
+  { id: 5, customer: 'Charlie Wilson', product: 'AirPods Pro 2nd Gen', amount: 249.00, status: 'Shipped', date: '2024-01-11', email: 'charlie.wilson@email.com', address: '654 Maple Dr, Seattle, WA 98101' },
 ];`;
     
     await fs.promises.writeFile(`${projectName}/src/data/mockData.ts`, mockDataContent);
@@ -420,7 +421,7 @@ export default function DashboardLayoutRoot({
       router={{ 
         pathname, 
         searchParams: new URLSearchParams(), 
-        navigate: (path) => router.push(path) 
+        navigate: (path: string | URL) => router.push(path.toString()) 
       }}
     >
       <DashboardLayout>
@@ -591,15 +592,11 @@ import Button from '@mui/material/Button';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
+import { mockOrders } from '@/data/mockData';
 
-const mockOrders = [
-  { id: 1, customer: 'John Doe', product: 'MacBook Pro 16" M3 Max', amount: 3499.00, status: 'Completed', date: '2024-01-15', email: 'john.doe@email.com', address: '123 Main St, New York, NY 10001' },
-  { id: 2, customer: 'Jane Smith', product: 'Lily58 Pro Keyboard Kit', amount: 149.50, status: 'Pending', date: '2024-01-14', email: 'jane.smith@email.com', address: '456 Oak Ave, Los Angeles, CA 90210' },
-  { id: 3, customer: 'Bob Johnson', product: 'Samsung Odyssey G9 49" Ultrawide', amount: 1299.99, status: 'Shipped', date: '2024-01-13', email: 'bob.johnson@email.com', address: '789 Pine Rd, Chicago, IL 60601' },
-];
-
-export default function OrderDetailPage({ params }: { params: { id: string } }) {
-  const orderId = parseInt(params.id);
+export default async function OrderDetailPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
+  const orderId = parseInt(id);
   const order = mockOrders.find(o => o.id === orderId);
 
   if (!order) {
@@ -682,7 +679,7 @@ import Box from '@mui/material/Box';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import Link from 'next/link';
 import Chip from '@mui/material/Chip';
-import { mockCustomers } from '../data/mockData';
+import { mockCustomers } from '@/data/mockData';
 
 const columns: GridColDef[] = [
   {
@@ -755,7 +752,7 @@ import Box from '@mui/material/Box';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import Link from 'next/link';
 import Chip from '@mui/material/Chip';
-import { mockProducts } from '../data/mockData';
+import { mockProducts } from '@/data/mockData';
 
 const columns: GridColDef[] = [
   {
@@ -836,10 +833,11 @@ import Chip from '@mui/material/Chip';
 import Button from '@mui/material/Button';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import Link from 'next/link';
-import { mockCustomers } from '../../data/mockData';
+import { mockCustomers } from '@/data/mockData';
 
-export default function CustomerDetailPage({ params }: { params: { id: string } }) {
-  const customerId = parseInt(params.id);
+export default async function CustomerDetailPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
+  const customerId = parseInt(id);
   const customer = mockCustomers.find(c => c.id === customerId);
 
   if (!customer) {
@@ -930,10 +928,11 @@ import Chip from '@mui/material/Chip';
 import Button from '@mui/material/Button';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import Link from 'next/link';
-import { mockProducts } from '../../data/mockData';
+import { mockProducts } from '@/data/mockData';
 
-export default function ProductDetailPage({ params }: { params: { id: string } }) {
-  const productId = parseInt(params.id);
+export default async function ProductDetailPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
+  const productId = parseInt(id);
   const product = mockProducts.find(p => p.id === productId);
 
   if (!product) {
@@ -1098,6 +1097,14 @@ export default function Home() {
       console.log(chalk.yellow('⚠️  Could not update root layout metadata automatically.'));
     }
     
+    // Remove unnecessary CSS files - Best practice: Use MUI's styling system instead of global CSS
+    // Reference: https://mui.com/material-ui/integrations/nextjs/
+    await removeCSSFiles(projectName);
+    
+    // Convert from npm to pnpm - Best practice: Use pnpm for better performance and disk usage
+    // Reference: https://pnpm.io/motivation
+    await convertToPnpm(projectName);
+    
     // Create custom README for Toolpad
     const readmeContent = `# ${projectName}
 
@@ -1247,18 +1254,31 @@ async function applyServerHardening(projectName: string): Promise<void> {
     const updatedNextConfig = nextConfigContent.replace(
       /const nextConfig: NextConfig = \{/,
       `const nextConfig: NextConfig = {
+  // Security hardening - Best practice: Disable powered-by header to prevent information disclosure
+  // Reference: https://nextjs.org/blog/security-nextjs-server-components-actions
   poweredByHeader: false,
+  
+  // Security hardening - Best practice: OWASP recommended security headers
+  // Reference: https://owasp.org/www-project-secure-headers/
+  // More info: https://github.com/rkristelijn/automater/blob/main/docs/security-best-practices.md
   async headers() {
     return [
       {
         source: '/(.*)',
         headers: [
+          // Prevent clickjacking attacks
           { key: 'X-Frame-Options', value: 'DENY' },
+          // Prevent MIME type sniffing
           { key: 'X-Content-Type-Options', value: 'nosniff' },
+          // Enable XSS protection
           { key: 'X-XSS-Protection', value: '1; mode=block' },
+          // Control referrer information
           { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
+          // Restrict dangerous browser features
           { key: 'Permissions-Policy', value: 'camera=(), microphone=(), geolocation=()' },
+          // Prevent resource sharing attacks
           { key: 'Cross-Origin-Resource-Policy', value: 'same-origin' },
+          // Comprehensive Content Security Policy
           { key: 'Content-Security-Policy', value: "default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self'; frame-ancestors 'none';" }
         ]
       }
@@ -1312,4 +1332,81 @@ async function applyBiome(projectName: string): Promise<void> {
       resolve();
     });
   });
+}
+
+async function removeCSSFiles(projectName: string): Promise<void> {
+  console.log(chalk.blue('🧹 Removing unnecessary CSS files...'));
+  
+  try {
+    // Remove CSS files - Best practice: Use MUI's CssBaseline instead of global CSS
+    const cssFiles = [
+      `${projectName}/src/app/globals.css`,
+      `${projectName}/src/app/page.module.css`
+    ];
+    
+    for (const file of cssFiles) {
+      try {
+        await fs.promises.unlink(file);
+        console.log(chalk.gray(`   Removed: ${file}`));
+      } catch (error) {
+        // File might not exist, continue
+      }
+    }
+    
+    // Remove CSS import from layout.tsx
+    const layoutPath = `${projectName}/src/app/layout.tsx`;
+    try {
+      const layoutContent = await fs.promises.readFile(layoutPath, 'utf8');
+      const updatedLayout = layoutContent.replace(/import ["']\.\/globals\.css["'];?\n?/g, '');
+      await fs.promises.writeFile(layoutPath, updatedLayout);
+      console.log(chalk.gray('   Removed CSS import from layout.tsx'));
+    } catch (error) {
+      console.log(chalk.yellow('⚠️  Could not remove CSS import from layout.tsx'));
+    }
+    
+    console.log(chalk.green('✅ CSS files removed - using MUI styling system'));
+  } catch (error) {
+    console.log(chalk.yellow('⚠️  Could not remove all CSS files'));
+  }
+}
+
+async function convertToPnpm(projectName: string): Promise<void> {
+  console.log(chalk.blue('📦 Converting to pnpm...'));
+  
+  try {
+    // Remove package-lock.json
+    const lockfilePath = `${projectName}/package-lock.json`;
+    try {
+      await fs.promises.unlink(lockfilePath);
+      console.log(chalk.gray('   Removed package-lock.json'));
+    } catch (error) {
+      // File might not exist
+    }
+    
+    // Install dependencies with pnpm
+    await new Promise<void>((resolve, reject) => {
+      const installProcess = spawn('pnpm', ['install'], {
+        cwd: projectName,
+        stdio: 'inherit'
+      });
+
+      installProcess.on('close', (code) => {
+        if (code === 0) {
+          console.log(chalk.green('✅ Dependencies installed with pnpm'));
+          resolve();
+        } else {
+          console.log(chalk.yellow('⚠️  pnpm install failed, keeping npm setup'));
+          resolve(); // Don't fail the whole process
+        }
+      });
+
+      installProcess.on('error', (error) => {
+        console.log(chalk.yellow('⚠️  pnpm not available, keeping npm setup'));
+        resolve(); // Don't fail the whole process
+      });
+    });
+    
+  } catch (error) {
+    console.log(chalk.yellow('⚠️  Could not convert to pnpm'));
+  }
 }

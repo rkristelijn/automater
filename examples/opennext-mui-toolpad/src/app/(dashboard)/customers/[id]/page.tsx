@@ -10,7 +10,7 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import Link from 'next/link';
 import { mockCustomers } from '@/data/mockData';
 
-export default async function CustomerDetailPage({ params }: { params: { id: string } }) {
+export default async function CustomerDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   const customerId = parseInt(id);
   const customer = mockCustomers.find(c => c.id === customerId);

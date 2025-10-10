@@ -51,7 +51,7 @@ export default function DashboardLayoutRoot({
       router={{ 
         pathname, 
         searchParams: new URLSearchParams(), 
-        navigate: (path) => router.push(path) 
+        navigate: (path: string | URL) => router.push(path.toString()) 
       }}
     >
       <DashboardLayout>
