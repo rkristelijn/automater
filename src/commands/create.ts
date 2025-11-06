@@ -424,7 +424,7 @@ async function applyBiome(projectName: string): Promise<void> {
   console.log(chalk.blue('🔧 Setting up Biome...'));
   
   return new Promise((resolve) => {
-    const installProcess = spawn('npm', ['install', '--save-dev', '@biomejs/biome'], {
+    const installProcess = spawn('pnpm', ['add', '--save-dev', '@biomejs/biome'], {
       cwd: projectName,
       stdio: 'inherit'
     });
@@ -433,16 +433,82 @@ async function applyBiome(projectName: string): Promise<void> {
       if (code === 0) {
         try {
           const fs = await import('fs');
+          const path = await import('path');
           
+          // Create Biome config
           const biomeConfig = {
-            "$schema": "https://biomejs.dev/schemas/1.8.3/schema.json",
-            "organizeImports": { "enabled": true },
-            "linter": { "enabled": true },
-            "formatter": { "enabled": true }
+            "$schema": "https://biomejs.dev/schemas/1.9.4/schema.json",
+            "files": {
+              "ignore": [".next/**", "node_modules/**", "dist/**", "build/**", ".open-next/**"]
+            },
+            "formatter": {
+              "enabled": true,
+              "indentStyle": "space"
+            },
+            "linter": {
+              "enabled": true,
+              "rules": {
+                "recommended": true
+              }
+            },
+            "javascript": {
+              "formatter": {
+                "quoteStyle": "single"
+              }
+            }
           };
           
           await fs.promises.writeFile(`${projectName}/biome.json`, JSON.stringify(biomeConfig, null, 2));
-          console.log(chalk.green('✅ Biome configured successfully!'));
+          
+          // Create .biomeignore file
+          const biomeIgnore = `.next/
+node_modules/
+dist/
+build/
+.open-next/
+*.log`;
+          await fs.promises.writeFile(`${projectName}/.biomeignore`, biomeIgnore);
+          
+          // Remove ESLint files
+          const eslintFiles = [
+            '.eslintrc.json',
+            '.eslintrc.js',
+            '.eslintrc.cjs',
+            'eslint.config.js',
+            'eslint.config.mjs'
+          ];
+          
+          for (const file of eslintFiles) {
+            try {
+              await fs.promises.unlink(path.join(projectName, file));
+              console.log(chalk.gray(`   Removed: ${file}`));
+            } catch {
+              // File doesn't exist, continue
+            }
+          }
+          
+          // Update package.json to replace ESLint scripts with Biome
+          const packageJsonPath = path.join(projectName, 'package.json');
+          const packageJson = JSON.parse(await fs.promises.readFile(packageJsonPath, 'utf8'));
+          
+          // Remove ESLint dependencies
+          if (packageJson.devDependencies) {
+            delete packageJson.devDependencies.eslint;
+            delete packageJson.devDependencies['eslint-config-next'];
+            delete packageJson.devDependencies['@typescript-eslint/eslint-plugin'];
+            delete packageJson.devDependencies['@typescript-eslint/parser'];
+          }
+          
+          // Replace lint script with Biome
+          if (packageJson.scripts) {
+            packageJson.scripts.lint = 'biome check src/';
+            packageJson.scripts['lint:fix'] = 'biome check --write src/';
+            packageJson.scripts.format = 'biome format --write src/';
+          }
+          
+          await fs.promises.writeFile(packageJsonPath, JSON.stringify(packageJson, null, 2));
+          
+          console.log(chalk.green('✅ Biome configured successfully! ESLint replaced.'));
         } catch (error) {
           console.log(chalk.yellow('⚠️  Could not configure Biome automatically.'));
         }

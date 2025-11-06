@@ -25,3 +25,4 @@
 - [ ] need to test if it actually deploys to cloudflare and runs there ok
 - [ ] there are still two css files generated, that should be an option
 - [ ] it needs a search bar in the header in dashboard layout
+- [ ] add tanstack query and table as example

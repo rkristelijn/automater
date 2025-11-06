@@ -17,7 +17,7 @@ export default function OrderDetailPage({ params }: { params: Promise<{ id: stri
   // Best practice: Yes, this is the recommended way for client components
   // Alternative: Convert to Server Component (remove 'use client')
   const { id } = use(params);
-  const orderId = parseInt(id);
+  const orderId = parseInt(id, 10);
   const order = mockOrders.find(o => o.id === orderId);
 
   if (!order) {
