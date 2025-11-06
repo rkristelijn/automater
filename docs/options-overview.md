@@ -101,7 +101,17 @@
 
 #### `mui-toolpad`
 **Source**: [MUI Toolpad Documentation](https://mui.com/toolpad/)
-- **Description**: Low-code admin interface builder
+- **Description**: Complete admin dashboard with MUI Toolpad Core
+- **Includes**: 
+  - Dark/light theme system with CSS variables
+  - Dashboard layout with navigation sidebar
+  - Customer, Product, Order management pages
+  - DataGrid components with responsive design
+  - Detail pages with Next.js 15+ compatibility
+  - Root page with theme toggle
+- **Dependencies**: `@toolpad/core`, `@mui/material`, `@mui/icons-material`, `@mui/x-data-grid`
+- **Bundle Size**: ~800KB (includes complete admin interface)
+- **Best For**: Admin interfaces, data management, business applications
 - **Functionality**: 
   - Drag-and-drop interface builder
   - Data source integrations

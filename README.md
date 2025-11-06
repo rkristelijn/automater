@@ -78,7 +78,7 @@ automater list features
 
 ### Styling & UI
 - **mui**: Material-UI components with [official Next.js integration](https://mui.com/material-ui/integrations/nextjs/)
-- **mui-toolpad**: Low-code admin interface builder from [MUI Toolpad](https://mui.com/toolpad/)
+- **mui-toolpad**: Complete admin dashboard with [MUI Toolpad Core](https://mui.com/toolpad/) - includes theme system, DataGrids, and CRUD pages
 - **tailwind**: Utility-first CSS with [framework-specific setup](https://tailwindcss.com/docs/guides/nextjs)
 - **chakra**: Accessible React components from [Chakra UI](https://chakra-ui.com/)
 
