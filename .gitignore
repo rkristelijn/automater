@@ -4,3 +4,5 @@ tmp/
 *.log
 .DS_Store
 .amazonq
+
+examples/opennext-mui-toolpad-working/

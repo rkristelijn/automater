@@ -291,7 +291,7 @@ async function installToolpad(projectName: string): Promise<void> {
   return new Promise((resolve, reject) => {
     console.log(chalk.blue('📦 Installing MUI Toolpad packages...'));
     
-    const installProcess = spawn('pnpm', ['add', '@toolpad/core', '@mui/material', '@mui/icons-material', '@mui/x-data-grid', '@emotion/styled', '@emotion/cache'], {
+    const installProcess = spawn('pnpm', ['add', '@toolpad/core', '@mui/material', '@mui/icons-material', '@mui/x-data-grid', '@emotion/react', '@emotion/styled'], {
       cwd: projectName,
       stdio: 'inherit'
     });
@@ -316,38 +316,16 @@ async function configureToolpad(projectName: string): Promise<void> {
   
   try {
     const fs = await import('fs');
+    const path = await import('path');
     
-    // Create theme directory and file
-    await fs.promises.mkdir(`${projectName}/src/theme`, { recursive: true });
-    const themeContent = `import { createTheme } from '@mui/material/styles';
-
-export const theme = createTheme({
-  cssVariables: {
-    colorSchemeSelector: 'data-toolpad-color-scheme',
-  },
-  colorSchemes: {
-    light: {
-      palette: {
-        primary: { main: '#1976d2' },
-        background: { default: '#f5f5f5', paper: '#ffffff' },
-      },
-    },
-    dark: {
-      palette: {
-        primary: { main: '#90caf9' },
-        background: { default: '#121212', paper: '#1e1e1e' },
-      },
-    },
-  },
-  components: {
-    MuiContainer: {
-      styleOverrides: {
-        root: { maxWidth: 'none !important', width: '100%' },
-      },
-    },
-  },
-});`;
-    await fs.promises.writeFile(`${projectName}/src/theme/theme.ts`, themeContent);
+    // Copy templates from templates/features/mui-toolpad
+    const templatePath = path.join(process.cwd(), 'templates/features/mui-toolpad');
+    const targetPath = path.join(projectName, 'src');
+    
+    await copyDirectory(templatePath, targetPath);
+    
+    // Remove unnecessary CSS files
+    await removeCSSFiles(projectName);
     
     console.log(chalk.green('✅ MUI Toolpad configured successfully!'));
   } catch (error) {
@@ -514,6 +492,26 @@ async function removeCSSFiles(projectName: string): Promise<void> {
     console.log(chalk.green('✅ CSS files removed - using MUI styling system'));
   } catch (error) {
     console.log(chalk.yellow('⚠️  Could not remove all CSS files'));
+  }
+}
+
+async function copyDirectory(src: string, dest: string): Promise<void> {
+  const fs = await import('fs');
+  const path = await import('path');
+  
+  const entries = await fs.promises.readdir(src, { withFileTypes: true });
+  
+  await fs.promises.mkdir(dest, { recursive: true });
+  
+  for (const entry of entries) {
+    const srcPath = path.join(src, entry.name);
+    const destPath = path.join(dest, entry.name);
+    
+    if (entry.isDirectory()) {
+      await copyDirectory(srcPath, destPath);
+    } else {
+      await fs.promises.copyFile(srcPath, destPath);
+    }
   }
 }
 

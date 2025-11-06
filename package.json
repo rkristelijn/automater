@@ -11,6 +11,8 @@
     "start": "node dist/cli.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "cd examples/opennext-mui-toolpad && pnpm dev",
+    "preregenerate:examples": "tsc",
+    "regenerate:examples": "rm -rf examples/opennext-mui-toolpad && echo 'Starting generator...' && node dist/cli.js create examples/opennext-mui-toolpad --features=mui-toolpad",
     "example:toolpad": "npx --yes create-toolpad-app@latest --example tutorial tmp/example-toolpad",
     "example:vercel": "npx --yes create-next-app@latest tmp/example-vercel --example blog-starter",
     "example:cloudflare": "npx --yes create-next-app --example with-static-export tmp/example-cloudflare"
