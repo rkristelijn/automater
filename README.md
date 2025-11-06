@@ -61,8 +61,6 @@ automater list features
 
 - **vite-react**: Vite + React + TypeScript + pnpm
 - **nextjs**: Next.js with TypeScript
-- **astro**: Astro for content sites
-- **sveltekit**: SvelteKit full-stack
 
 ## Supported Features
 
@@ -71,20 +69,14 @@ automater list features
 ### Security & Quality ⭐
 - **serverHardening** *(Default)*: Production-ready security headers following [OWASP guidelines](https://owasp.org/www-project-secure-headers/)
 - **biome** *(Default)*: Fast Rust-based linter/formatter from [Biome project](https://biomejs.dev/)
-- **eslint**: Traditional ESLint + Prettier setup for teams requiring specific plugins
-- **husky**: Git hooks for code quality enforcement
 
 **[🔒 Security Best Practices](docs/security-best-practices.md)** - Detailed security implementation and verification guide.
 
 ### Styling & UI
 - **mui**: Material-UI components with [official Next.js integration](https://mui.com/material-ui/integrations/nextjs/)
 - **mui-toolpad**: Complete admin dashboard with [MUI Toolpad Core](https://mui.com/toolpad/) - includes theme system, DataGrids, and CRUD pages
-- **tailwind**: Utility-first CSS with [framework-specific setup](https://tailwindcss.com/docs/guides/nextjs)
-- **chakra**: Accessible React components from [Chakra UI](https://chakra-ui.com/)
 
 ### Deployment
-- **vercel**: [Vercel platform](https://vercel.com/docs) deployment configuration
-- **netlify**: [Netlify](https://docs.netlify.com/) static site deployment
 - **cloudflare**: [Cloudflare Pages](https://developers.cloudflare.com/pages/) with Workers integration
 
 ### Default Features
@@ -128,43 +120,6 @@ Every feature follows official documentation:
 ### Prerequisites
 - Node.js 18+
 - pnpm (recommended) or npm
-
-### Setup
-```bash
-git clone https://github.com/yourusername/automater
-cd automater
-pnpm install
-```
-
-### Development Commands
-```bash
-# Build the CLI
-pnpm build
-
-# Run in development
-pnpm dev
-
-# Test the CLI locally
-pnpm build
-node dist/cli.js create tmp/test-app --start --open
-
-# Run tests
-pnpm test
-```
-
-### Project Structure
-```
-automater/
-├── src/
-│   ├── cli/           # CLI commands and interface
-│   ├── templates/     # Project templates
-│   ├── features/      # Feature modules
-│   ├── resolvers/     # Conflict resolution
-│   └── utils/         # Shared utilities
-├── templates/         # Template files
-├── tests/            # Test suites
-└── docs/             # Documentation
-```
 
 ## Contributing
 
