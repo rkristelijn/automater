@@ -51,7 +51,14 @@ const columns: GridColDef[] = [
 
 export default function ProductsPage() {
   return (
-    <Box sx={{ height: 600, width: '100%' }}>
+    <Box sx={{ 
+      // calc() usage: Dynamic height calculation for DataGrid
+      // 100vh (full viewport) - 200px (estimated header + navigation space)
+      // Best practice: Responsive height that adapts to viewport
+      // Alternative: Use flexbox with flex: 1, but calc() is simpler here
+      height: 'calc(100vh - 200px)', 
+      width: '100%' 
+    }}>
       <DataGrid
         rows={mockProducts}
         columns={columns}

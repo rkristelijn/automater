@@ -8,6 +8,8 @@ import DashboardIcon from '@mui/icons-material/Dashboard';
 import PeopleIcon from '@mui/icons-material/People';
 import InventoryIcon from '@mui/icons-material/Inventory';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+// Theme integration: Import centralized theme with dark/light mode support
+import { theme } from '../../theme/theme';
 
 const NAVIGATION = [
   {
@@ -48,44 +50,19 @@ export default function DashboardLayoutRoot({
     <AppProvider 
       navigation={NAVIGATION} 
       branding={BRANDING}
+      // Theme integration: Pass theme to AppProvider for dark/light mode support
+      // Best practice: Centralized theme management through AppProvider
+      theme={theme}
       router={{ 
         pathname, 
         searchParams: new URLSearchParams(), 
         navigate: (path: string | URL) => router.push(path.toString()) 
       }}
     >
-      <DashboardLayout
-        sx={{
-          width: '100%',
-          height: '100%',
-          '& .MuiStack-root': {
-            width: '100%',
-            height: '100%',
-            maxWidth: 'none'
-          },
-          '& .MuiContainer-root': {
-            maxWidth: 'none !important',
-            width: '100% !important',
-            height: '100% !important'
-          }
-        }}
-      >
-        <PageContainer 
-          sx={{ 
-            height: '100%',
-            width: '100%',
-            maxWidth: 'none', // Override default maxWidth
-            padding: 0,       // Remove default padding
-            margin: 0,        // Remove default margin
-            display: 'flex',
-            flexDirection: 'column',
-            '& .MuiContainer-root': {
-              maxWidth: 'none !important',
-              padding: '0 !important',
-              width: '100% !important'
-            }
-          }}
-        >
+      {/* Layout simplification: Removed complex sx overrides that caused conflicts
+          Best practice: Let Toolpad handle default layout, minimal custom styling */}
+      <DashboardLayout>
+        <PageContainer>
           {children}
         </PageContainer>
       </DashboardLayout>

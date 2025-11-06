@@ -22,8 +22,20 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body className={`${geistSans.variable} ${geistMono.variable}`}>
+    <html 
+      lang="en" 
+      suppressHydrationWarning 
+      // Inline style: Ensures full viewport height for layout components
+      // Best practice: Minimal CSS reset for full-height layouts
+      style={{ height: '100%' }}
+    >
+      <body 
+        className={`${geistSans.variable} ${geistMono.variable}`} 
+        // Inline style: Full height + reset default margin
+        // Alternative: Could use global CSS, but inline is simpler for layout fundamentals
+        // Best practice: Keep layout-critical styles close to component
+        style={{ height: '100%', margin: 0 }}
+      >
         {children}
       </body>
     </html>

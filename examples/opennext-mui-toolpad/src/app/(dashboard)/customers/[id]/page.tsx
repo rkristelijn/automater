@@ -9,9 +9,14 @@ import Button from '@mui/material/Button';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import Link from 'next/link';
 import { mockCustomers } from '@/data/mockData';
+import { use } from 'react';
 
-export default async function CustomerDetailPage({ params }: { params: Promise<{ id: string }> }) {
-  const { id } = await params;
+export default function CustomerDetailPage({ params }: { params: Promise<{ id: string }> }) {
+  // use() hook: Unwraps Promise in client components
+  // Why: Client components can't be async, but params is Promise in Next.js 15+
+  // Best practice: Yes, this is the recommended way for client components
+  // Alternative: Convert to Server Component (remove 'use client')
+  const { id } = use(params);
   const customerId = parseInt(id);
   const customer = mockCustomers.find(c => c.id === customerId);
 
