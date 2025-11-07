@@ -1,6 +1,6 @@
 {
   "name": "automater",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Scaffold modern web apps with best practices in seconds",
   "type": "module",
   "bin": {
