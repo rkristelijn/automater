@@ -24,44 +24,22 @@ Think `npm create cloudflare@latest` but for any stack combination with intellig
 
 ### Create a New Project
 ```bash
-# Vite + React + TypeScript + MUI + Biome
-npx automater create my-app --features=mui,biome
-
-# Next.js with MUI Toolpad in specific directory
-npx automater create projects/admin-app --features=mui-toolpad
-
-# Create in tmp directory for testing
-npx automater create tmp/test-app
-
-# Start development server immediately and open browser
-npx automater create my-app --start --open
+# NextJS + TypeScript + MUI + Toolpad + Biome + Cloudflare
+npx automater create examples/opennext-mui-toolpad --features=mui-toolpad
 ```
 
-### Add Features to Existing Project
-```bash
-cd my-existing-project
+### Demo
 
-# Add Biome (replaces ESLint + Prettier if present)
-automater add biome
-
-# Add MUI (handles Tailwind conflicts)
-automater add mui
-
-# Add deployment
-automater add vercel
-```
+![](docs/light-product-details.png)
+![](docs/dark-customers.png)
+![](docs/axe-devtools.png)
+![](docs/lighthouse.png)
 
 ### List Available Options
 ```bash
 automater list templates
 automater list features
 ```
-
-## Supported Templates
-
-- **vite-react**: Vite + React + TypeScript + pnpm
-- **nextjs**: Next.js with TypeScript
-
 ## Supported Features
 
 > 📖 **Complete reference**: See [OPTIONS_OVERVIEW.md](docs/OPTIONS_OVERVIEW.md) for detailed feature descriptions, sources, and compatibility matrix.
@@ -151,16 +129,9 @@ We welcome contributions! Here's how to get started:
 4. Run `pnpm test` and `pnpm build`
 5. Submit a pull request with clear description
 
-## Roadmap
+## Contribution
 
-- [ ] Core CLI with Vite + React template
-- [ ] MUI and Biome feature modules
-- [ ] Conflict resolution engine
-- [ ] Next.js and Astro templates
-- [ ] Deployment integrations
-- [ ] Interactive mode with prompts
-- [ ] Custom template creation
-- [ ] Plugin system
+See [CONTRIBUTION.md](./CONTRIBUTION.md)
 
 ## Support This Project
 
