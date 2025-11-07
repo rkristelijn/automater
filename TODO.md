@@ -25,3 +25,7 @@
 - [ ] need to test if it actually deploys to cloudflare and runs there ok
 - [ ] there are still two css files generated, that should be an option
 - [ ] it needs a search bar in the header in dashboard layout
+- [ ] add tanstack query and table as example
+- [ ] add defaults metadata for whatsapp, facebook, insta, linkedin... 
+- [ ] add robots.txt
+- [ ] deploy the app and score with analysers, zap scanner, 

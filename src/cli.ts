@@ -3,6 +3,7 @@
 import { Command } from 'commander';
 import chalk from 'chalk';
 import { createProject } from './commands/create.js';
+import { addFeature } from './commands/add.js';
 
 const program = new Command();
 
@@ -29,6 +30,19 @@ program
       await createProject(projectName, options);
     } catch (error) {
       console.error(chalk.red('Error creating project:'), error);
+      process.exit(1);
+    }
+  });
+
+program
+  .command('add')
+  .description('Add features to existing project')
+  .argument('<feature>', 'Feature to add (biome, mui, mui-toolpad)')
+  .action(async (feature: string) => {
+    try {
+      await addFeature(feature);
+    } catch (error) {
+      console.error(chalk.red('Error adding feature:'), error);
       process.exit(1);
     }
   });

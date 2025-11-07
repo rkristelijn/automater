@@ -24,46 +24,22 @@ Think `npm create cloudflare@latest` but for any stack combination with intellig
 
 ### Create a New Project
 ```bash
-# Vite + React + TypeScript + MUI + Biome
-npx automater create my-app --features=mui,biome
-
-# Next.js with MUI Toolpad in specific directory
-npx automater create projects/admin-app --features=mui-toolpad
-
-# Create in tmp directory for testing
-npx automater create tmp/test-app
-
-# Start development server immediately and open browser
-npx automater create my-app --start --open
+# NextJS + TypeScript + MUI + Toolpad + Biome + Cloudflare
+npx automater create examples/opennext-mui-toolpad --features=mui-toolpad
 ```
 
-### Add Features to Existing Project
-```bash
-cd my-existing-project
+### Demo
 
-# Add Biome (replaces ESLint + Prettier if present)
-automater add biome
-
-# Add MUI (handles Tailwind conflicts)
-automater add mui
-
-# Add deployment
-automater add vercel
-```
+![](docs/light-product-details.png)
+![](docs/dark-customers.png)
+![](docs/axe-devtools.png)
+![](docs/lighthouse.png)
 
 ### List Available Options
 ```bash
 automater list templates
 automater list features
 ```
-
-## Supported Templates
-
-- **vite-react**: Vite + React + TypeScript + pnpm
-- **nextjs**: Next.js with TypeScript
-- **astro**: Astro for content sites
-- **sveltekit**: SvelteKit full-stack
-
 ## Supported Features
 
 > 📖 **Complete reference**: See [OPTIONS_OVERVIEW.md](docs/OPTIONS_OVERVIEW.md) for detailed feature descriptions, sources, and compatibility matrix.
@@ -71,20 +47,14 @@ automater list features
 ### Security & Quality ⭐
 - **serverHardening** *(Default)*: Production-ready security headers following [OWASP guidelines](https://owasp.org/www-project-secure-headers/)
 - **biome** *(Default)*: Fast Rust-based linter/formatter from [Biome project](https://biomejs.dev/)
-- **eslint**: Traditional ESLint + Prettier setup for teams requiring specific plugins
-- **husky**: Git hooks for code quality enforcement
 
 **[🔒 Security Best Practices](docs/security-best-practices.md)** - Detailed security implementation and verification guide.
 
 ### Styling & UI
 - **mui**: Material-UI components with [official Next.js integration](https://mui.com/material-ui/integrations/nextjs/)
-- **mui-toolpad**: Low-code admin interface builder from [MUI Toolpad](https://mui.com/toolpad/)
-- **tailwind**: Utility-first CSS with [framework-specific setup](https://tailwindcss.com/docs/guides/nextjs)
-- **chakra**: Accessible React components from [Chakra UI](https://chakra-ui.com/)
+- **mui-toolpad**: Complete admin dashboard with [MUI Toolpad Core](https://mui.com/toolpad/) - includes theme system, DataGrids, and CRUD pages
 
 ### Deployment
-- **vercel**: [Vercel platform](https://vercel.com/docs) deployment configuration
-- **netlify**: [Netlify](https://docs.netlify.com/) static site deployment
 - **cloudflare**: [Cloudflare Pages](https://developers.cloudflare.com/pages/) with Workers integration
 
 ### Default Features
@@ -129,43 +99,6 @@ Every feature follows official documentation:
 - Node.js 18+
 - pnpm (recommended) or npm
 
-### Setup
-```bash
-git clone https://github.com/yourusername/automater
-cd automater
-pnpm install
-```
-
-### Development Commands
-```bash
-# Build the CLI
-pnpm build
-
-# Run in development
-pnpm dev
-
-# Test the CLI locally
-pnpm build
-node dist/cli.js create tmp/test-app --start --open
-
-# Run tests
-pnpm test
-```
-
-### Project Structure
-```
-automater/
-├── src/
-│   ├── cli/           # CLI commands and interface
-│   ├── templates/     # Project templates
-│   ├── features/      # Feature modules
-│   ├── resolvers/     # Conflict resolution
-│   └── utils/         # Shared utilities
-├── templates/         # Template files
-├── tests/            # Test suites
-└── docs/             # Documentation
-```
-
 ## Contributing
 
 We welcome contributions! Here's how to get started:
@@ -196,16 +129,9 @@ We welcome contributions! Here's how to get started:
 4. Run `pnpm test` and `pnpm build`
 5. Submit a pull request with clear description
 
-## Roadmap
+## Contribution
 
-- [ ] Core CLI with Vite + React template
-- [ ] MUI and Biome feature modules
-- [ ] Conflict resolution engine
-- [ ] Next.js and Astro templates
-- [ ] Deployment integrations
-- [ ] Interactive mode with prompts
-- [ ] Custom template creation
-- [ ] Plugin system
+See [CONTRIBUTION.md](./CONTRIBUTION.md)
 
 ## Support This Project
 
