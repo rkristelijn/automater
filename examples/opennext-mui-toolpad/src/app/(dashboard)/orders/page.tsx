@@ -1,9 +1,9 @@
 'use client';
 import * as React from 'react';
-import Box from '@mui/material/Box';
-import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import Link from 'next/link';
-import Chip from '@mui/material/Chip';
+import { Box, Chip } from '@mui/material';
+import { DataGrid, GridColDef } from '@mui/x-data-grid';
+import { PageContainer } from '@toolpad/core/PageContainer';
 import { mockOrders } from '@/data/mockData';
 
 const columns: GridColDef[] = [
@@ -52,27 +52,39 @@ const columns: GridColDef[] = [
 ];
 
 export default function OrdersPage() {
+  const [mounted, setMounted] = React.useState(false);
+
+  React.useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) {
+    return <PageContainer><Box>Loading...</Box></PageContainer>;
+  }
+
   return (
-    <Box sx={{ 
-      // calc() usage: Dynamic height calculation for DataGrid
-      // 100vh (full viewport) - 200px (estimated header + navigation space)
-      // Best practice: Responsive height that adapts to viewport
-      // Alternative: Use flexbox with flex: 1, but calc() is simpler here
-      height: 'calc(100vh - 200px)', 
-      width: '100%' 
-    }}>
-      <DataGrid
-        rows={mockOrders}
-        columns={columns}
-        initialState={{
-          pagination: {
-            paginationModel: { page: 0, pageSize: 10 },
-          },
-        }}
-        pageSizeOptions={[10, 25, 50]}
-        checkboxSelection
-        disableRowSelectionOnClick
-      />
-    </Box>
+    <PageContainer>
+      <Box sx={{ 
+        // calc() usage: Dynamic height calculation for DataGrid
+        // 100vh (full viewport) - 200px (estimated header + navigation space)
+        // Best practice: Responsive height that adapts to viewport
+        // Alternative: Use flexbox with flex: 1, but calc() is simpler here
+        height: 'calc(100vh - 200px)', 
+        width: '100%' 
+      }}>
+        <DataGrid
+          rows={mockOrders}
+          columns={columns}
+          initialState={{
+            pagination: {
+              paginationModel: { page: 0, pageSize: 10 },
+            },
+          }}
+          pageSizeOptions={[10, 25, 50]}
+          checkboxSelection
+          disableRowSelectionOnClick
+        />
+      </Box>
+    </PageContainer>
   );
 }

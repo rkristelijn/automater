@@ -1,13 +1,9 @@
 'use client';
 import * as React from 'react';
+import { usePathname, useRouter } from 'next/navigation';
+import { Dashboard as DashboardIcon, People as PeopleIcon, Inventory as InventoryIcon, ShoppingCart as ShoppingCartIcon } from '@mui/icons-material';
 import { AppProvider } from '@toolpad/core/AppProvider';
 import { DashboardLayout } from '@toolpad/core/DashboardLayout';
-import { PageContainer } from '@toolpad/core/PageContainer';
-import { usePathname, useRouter } from 'next/navigation';
-import DashboardIcon from '@mui/icons-material/Dashboard';
-import PeopleIcon from '@mui/icons-material/People';
-import InventoryIcon from '@mui/icons-material/Inventory';
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 // Theme integration: Import centralized theme with dark/light mode support
 import { theme } from '../../theme/theme';
 
@@ -21,16 +17,19 @@ const NAVIGATION = [
     segment: 'customers',
     title: 'Customers',
     icon: <PeopleIcon />,
+    pattern: 'customers{/:id}*',
   },
   {
     segment: 'products',
     title: 'Products',
     icon: <InventoryIcon />,
+    pattern: 'products{/:id}*',
   },
   {
     segment: 'orders',
     title: 'Orders',
     icon: <ShoppingCartIcon />,
+    pattern: 'orders{/:id}*',
   },
 ];
 
@@ -62,9 +61,7 @@ export default function DashboardLayoutRoot({
       {/* Layout simplification: Removed complex sx overrides that caused conflicts
           Best practice: Let Toolpad handle default layout, minimal custom styling */}
       <DashboardLayout>
-        <PageContainer>
-          {children}
-        </PageContainer>
+        {children}
       </DashboardLayout>
     </AppProvider>
   );
