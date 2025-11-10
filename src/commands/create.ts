@@ -121,11 +121,33 @@ async function createCloudflareNextJs(
   });
 }
 
+async function fallbackToNpm(projectName: string, packages: string[]): Promise<void> {
+  return new Promise((resolve, reject) => {
+    const installProcess = spawn('npm', ['install', ...packages], {
+      cwd: projectName,
+      stdio: 'inherit'
+    });
+
+    installProcess.on('close', (code) => {
+      if (code === 0) {
+        console.log(chalk.green('✅ Packages installed with npm'));
+        resolve();
+      } else {
+        reject(new Error(`npm installation failed with code ${code}`));
+      }
+    });
+
+    installProcess.on('error', (error) => {
+      reject(error);
+    });
+  });
+}
+
 async function installMUI(projectName: string): Promise<void> {
   return new Promise((resolve, reject) => {
     console.log(chalk.blue('📦 Installing MUI packages...'));
     
-    const installProcess = spawn('npm', ['install', '@mui/material', '@mui/material-nextjs', '@emotion/cache', '@emotion/styled'], {
+    const installProcess = spawn('pnpm', ['add', '@mui/material', '@mui/material-nextjs', '@emotion/cache', '@emotion/styled'], {
       cwd: projectName,
       stdio: 'inherit'
     });
@@ -135,12 +157,20 @@ async function installMUI(projectName: string): Promise<void> {
         console.log(chalk.green('✅ MUI packages installed successfully!'));
         configureMUI(projectName).then(resolve).catch(reject);
       } else {
-        reject(new Error(`MUI installation failed with code ${code}`));
+        console.log(chalk.yellow('⚠️  pnpm failed, falling back to npm...'));
+        fallbackToNpm(projectName, ['@mui/material', '@mui/material-nextjs', '@emotion/cache', '@emotion/styled'])
+          .then(() => configureMUI(projectName))
+          .then(resolve)
+          .catch(reject);
       }
     });
 
     installProcess.on('error', (error) => {
-      reject(error);
+      console.log(chalk.yellow('⚠️  pnpm not available, falling back to npm...'));
+      fallbackToNpm(projectName, ['@mui/material', '@mui/material-nextjs', '@emotion/cache', '@emotion/styled'])
+        .then(() => configureMUI(projectName))
+        .then(resolve)
+        .catch(reject);
     });
   });
 }
@@ -301,12 +331,20 @@ async function installToolpad(projectName: string): Promise<void> {
         console.log(chalk.green('✅ MUI Toolpad packages installed successfully!'));
         configureToolpad(projectName).then(resolve).catch(reject);
       } else {
-        reject(new Error(`Toolpad installation failed with code ${code}`));
+        console.log(chalk.yellow('⚠️  pnpm failed, falling back to npm...'));
+        fallbackToNpm(projectName, ['@toolpad/core', '@mui/material', '@mui/icons-material', '@mui/x-data-grid', '@emotion/react', '@emotion/styled'])
+          .then(() => configureToolpad(projectName))
+          .then(resolve)
+          .catch(reject);
       }
     });
 
     installProcess.on('error', (error) => {
-      reject(error);
+      console.log(chalk.yellow('⚠️  pnpm not available, falling back to npm...'));
+      fallbackToNpm(projectName, ['@toolpad/core', '@mui/material', '@mui/icons-material', '@mui/x-data-grid', '@emotion/react', '@emotion/styled'])
+        .then(() => configureToolpad(projectName))
+        .then(resolve)
+        .catch(reject);
     });
   });
 }
@@ -317,9 +355,15 @@ async function configureToolpad(projectName: string): Promise<void> {
   try {
     const fs = await import('fs');
     const path = await import('path');
+    const { fileURLToPath } = await import('url');
     
-    // Copy templates from templates/features/mui-toolpad
-    const templatePath = path.join(process.cwd(), 'templates/features/mui-toolpad');
+    // Get the directory of this script file
+    const __filename = fileURLToPath(import.meta.url);
+    const __dirname = path.dirname(__filename);
+    
+    // Go up from src/commands/ to the package root, then to templates
+    const packageRoot = path.resolve(__dirname, '..', '..');
+    const templatePath = path.join(packageRoot, 'templates/features/mui-toolpad');
     const targetPath = path.join(projectName, 'src');
     
     await copyDirectory(templatePath, targetPath);
