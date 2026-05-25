@@ -3,4 +3,8 @@ dist/
 tmp/
 *.log
 .DS_Store
-.amazonq
+.amazonq.tmp/
+.amazonq/
+.cpm/
+.tmp/
+tmp/
