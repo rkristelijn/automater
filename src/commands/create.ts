@@ -52,10 +52,9 @@ export async function createProject(projectName: string, options: CreateOptions)
 
   console.log(chalk.green(`✅ Project ${projectName} created successfully!`));
   
-  // Apply default features (serverHardening, biome)
-  const defaultFeatures = ['serverHardening', 'biome', 'flupke'];
+  // Apply default features (serverHardening, biome first, flupke last)
   const customFeatures = features ? features.split(',').map(f => f.trim()) : [];
-  const allFeatures = [...defaultFeatures, ...customFeatures];
+  const allFeatures = ['serverHardening', 'biome', ...customFeatures, 'flupke'];
   
   console.log(chalk.yellow(`📦 Adding features: ${allFeatures.join(', ')}`));
   
