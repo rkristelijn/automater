@@ -53,7 +53,7 @@ export async function createProject(projectName: string, options: CreateOptions)
   console.log(chalk.green(`✅ Project ${projectName} created successfully!`));
   
   // Apply default features (serverHardening, biome)
-  const defaultFeatures = ['serverHardening', 'biome'];
+  const defaultFeatures = ['serverHardening', 'biome', 'flupke'];
   const customFeatures = features ? features.split(',').map(f => f.trim()) : [];
   const allFeatures = [...defaultFeatures, ...customFeatures];
   
@@ -64,6 +64,8 @@ export async function createProject(projectName: string, options: CreateOptions)
       await applyServerHardening(projectName);
     } else if (feature === 'biome') {
       await applyBiome(projectName);
+    } else if (feature === 'flupke') {
+      await applyFlupke(projectName);
     } else if (feature === 'mui') {
       await installMUI(projectName);
     } else if (feature === 'mui-toolpad') {
@@ -376,6 +378,32 @@ async function configureToolpad(projectName: string): Promise<void> {
     console.log(chalk.yellow('⚠️  Could not automatically configure Toolpad.'));
     console.log(error);
   }
+}
+
+async function applyFlupke(projectName: string): Promise<void> {
+  console.log(chalk.blue('⚡ Optimizing dependencies with flupke...'));
+  
+  return new Promise((resolve) => {
+    const child = spawn('npx', ['--yes', '@flupkejs/cli'], {
+      cwd: projectName,
+      stdio: 'inherit',
+      shell: true
+    });
+
+    child.on('close', (code) => {
+      if (code === 0) {
+        console.log(chalk.green('✅ Dependencies optimized with flupke'));
+      } else {
+        console.log(chalk.yellow('⚠️  flupke optimization skipped'));
+      }
+      resolve();
+    });
+
+    child.on('error', () => {
+      console.log(chalk.yellow('⚠️  flupke not available, skipping'));
+      resolve();
+    });
+  });
 }
 
 async function startDevServer(projectName: string, openBrowser: boolean): Promise<void> {
