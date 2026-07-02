@@ -1,0 +1,13 @@
+language: "en"
+reviews:
+  profile: "assertive"
+  auto_review:
+    enabled: true
+    drafts: false
+  path_instructions:
+    - path: "src/**"
+      instructions: "Review for TypeScript best practices, proper error handling, and clean code. Ensure no deprecated MUI patterns (deep imports, Toolpad references, old Grid API)."
+    - path: "templates/**"
+      instructions: "Ensure generated code follows MUI v9 best practices: CSS variables, slots/slotProps pattern, no deep imports, AppRouterCacheProvider with enableCssLayer."
+chat:
+  auto_reply: true

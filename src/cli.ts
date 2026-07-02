@@ -10,16 +10,16 @@ const program = new Command();
 program
   .name('automater')
   .description('Scaffold modern web apps with best practices in seconds')
-  .version('0.1.0');
+  .version('2.0.0');
 
 program
   .command('create')
-  .description('Create a new project')
+  .description('Create a new project (Next.js + Cloudflare Workers + MUI v9)')
   .argument('<project-name>', 'Name of the project to create')
   .option('--template <template>', 'Project template', 'nextjs')
-  .option('--features <features>', 'Comma-separated list of features to add')
-  .option('--framework <framework>', 'Framework to use (next, react, vue, etc.)', 'next')
-  .option('--platform <platform>', 'Deployment platform (workers, pages)', 'pages')
+  .option('--features <features>', 'Comma-separated list of features to add (e.g. mui)')
+  .option('--framework <framework>', 'Framework to use', 'next')
+  .option('--platform <platform>', 'Deployment platform', 'workers')
   .option('--no-typescript', 'Disable TypeScript')
   .option('--start', 'Start development server after creation')
   .option('--open', 'Open browser after starting (requires --start)')
@@ -37,7 +37,7 @@ program
 program
   .command('add')
   .description('Add features to existing project')
-  .argument('<feature>', 'Feature to add (biome, mui, mui-toolpad)')
+  .argument('<feature>', 'Feature to add (biome, mui)')
   .action(async (feature: string) => {
     try {
       await addFeature(feature);
