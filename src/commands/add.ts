@@ -16,10 +16,8 @@ export async function addFeature(feature: string): Promise<void> {
     await applyBiome(currentDir);
   } else if (feature === 'mui') {
     await installMUI(currentDir);
-  } else if (feature === 'mui-toolpad') {
-    await installToolpad(currentDir);
   } else {
-    throw new Error(`Unknown feature: ${feature}`);
+    throw new Error(`Unknown feature: ${feature}. Available: biome, mui`);
   }
   
   console.log(chalk.green(`✅ Feature ${feature} added successfully!`));
@@ -29,7 +27,7 @@ async function applyBiome(projectDir: string): Promise<void> {
   console.log(chalk.blue('🔧 Setting up Biome...'));
   
   return new Promise((resolve) => {
-    const installProcess = spawn('npm', ['install', '--save-dev', '@biomejs/biome'], {
+    const installProcess = spawn('pnpm', ['add', '--save-dev', '@biomejs/biome'], {
       cwd: projectDir,
       stdio: 'inherit'
     });
@@ -38,10 +36,13 @@ async function applyBiome(projectDir: string): Promise<void> {
       if (code === 0) {
         try {
           const biomeConfig = {
-            "$schema": "https://biomejs.dev/schemas/2.2.5/schema.json",
-            "assist": { "actions": { "source": { "organizeImports": "on" } } },
-            "linter": { "enabled": true },
-            "formatter": { "enabled": true }
+            "$schema": "https://biomejs.dev/schemas/1.9.4/schema.json",
+            "files": {
+              "ignore": [".next/**", "node_modules/**", "dist/**", "build/**", ".open-next/**"]
+            },
+            "formatter": { "enabled": true, "indentStyle": "space" },
+            "linter": { "enabled": true, "rules": { "recommended": true } },
+            "javascript": { "formatter": { "quoteStyle": "single" } }
           };
           
           await fs.promises.writeFile(`${projectDir}/biome.json`, JSON.stringify(biomeConfig, null, 2));
@@ -57,40 +58,33 @@ async function applyBiome(projectDir: string): Promise<void> {
   });
 }
 
+/**
+ * Install MUI v9 packages into an existing project.
+ * Reference: https://mui.com/material-ui/getting-started/installation/
+ */
 async function installMUI(projectDir: string): Promise<void> {
-  console.log(chalk.blue('📦 Installing MUI...'));
+  console.log(chalk.blue('📦 Installing MUI v9...'));
   
+  const packages = [
+    '@mui/material@^9',
+    '@mui/icons-material@^9',
+    '@mui/material-nextjs@^9',
+    '@emotion/cache',
+    '@emotion/react',
+    '@emotion/styled',
+  ];
+
   return new Promise((resolve) => {
-    const installProcess = spawn('npm', ['install', '@mui/material', '@emotion/styled', '@emotion/cache'], {
+    const installProcess = spawn('pnpm', ['add', ...packages], {
       cwd: projectDir,
       stdio: 'inherit'
     });
 
     installProcess.on('close', (code) => {
       if (code === 0) {
-        console.log(chalk.green('✅ MUI installed successfully!'));
+        console.log(chalk.green('✅ MUI v9 installed successfully!'));
       } else {
         console.log(chalk.yellow('⚠️  MUI installation failed.'));
-      }
-      resolve();
-    });
-  });
-}
-
-async function installToolpad(projectDir: string): Promise<void> {
-  console.log(chalk.blue('📦 Installing MUI Toolpad...'));
-  
-  return new Promise((resolve) => {
-    const installProcess = spawn('npm', ['install', '@toolpad/core', '@mui/material', '@mui/icons-material', '@mui/x-data-grid'], {
-      cwd: projectDir,
-      stdio: 'inherit'
-    });
-
-    installProcess.on('close', (code) => {
-      if (code === 0) {
-        console.log(chalk.green('✅ MUI Toolpad installed successfully!'));
-      } else {
-        console.log(chalk.yellow('⚠️  MUI Toolpad installation failed.'));
       }
       resolve();
     });
