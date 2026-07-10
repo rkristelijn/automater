@@ -5,7 +5,8 @@
 ## Project Structure
 
 ### App Router (Recommended)
-```
+
+```text
 app/
 ├── layout.tsx          # Root layout
 ├── page.tsx           # Homepage
@@ -25,6 +26,7 @@ app/
 ## Performance
 
 ### Image Optimization
+
 ```tsx
 import Image from 'next/image'
 
@@ -40,6 +42,7 @@ import Image from 'next/image'
 ```
 
 ### Font Optimization
+
 ```tsx
 import { Inter } from 'next/font/google'
 
@@ -59,6 +62,7 @@ export default function RootLayout({
 ```
 
 ### Bundle Optimization
+
 ```tsx
 // Use dynamic imports for code splitting
 import dynamic from 'next/dynamic'
@@ -72,6 +76,7 @@ const DynamicComponent = dynamic(() => import('../components/heavy-component'), 
 ## Data Fetching
 
 ### Server Components (Default)
+
 ```tsx
 // Fetch data directly in server components
 async function getData() {
@@ -88,6 +93,7 @@ export default async function Page() {
 ```
 
 ### Client Components
+
 ```tsx
 'use client'
 
@@ -109,6 +115,7 @@ export default function ClientComponent() {
 ## Security
 
 ### Environment Variables
+
 ```bash
 # .env.local
 DATABASE_URL=postgresql://...
@@ -125,6 +132,7 @@ const publicApiUrl = process.env.NEXT_PUBLIC_API_URL
 ```
 
 ### Content Security Policy
+
 ```tsx
 // next.config.js
 const nextConfig = {
@@ -147,6 +155,7 @@ const nextConfig = {
 ## SEO & Metadata
 
 ### Static Metadata
+
 ```tsx
 import { Metadata } from 'next'
 
@@ -162,10 +171,11 @@ export const metadata: Metadata = {
 ```
 
 ### Dynamic Metadata
+
 ```tsx
 export async function generateMetadata({ params }): Promise<Metadata> {
   const product = await getProduct(params.id)
-  
+
   return {
     title: product.name,
     description: product.description
@@ -176,6 +186,7 @@ export async function generateMetadata({ params }): Promise<Metadata> {
 ## Error Handling
 
 ### Error Boundaries
+
 ```tsx
 // app/error.tsx
 'use client'
@@ -197,6 +208,7 @@ export default function Error({
 ```
 
 ### Not Found Pages
+
 ```tsx
 // app/not-found.tsx
 export default function NotFound() {
@@ -212,6 +224,7 @@ export default function NotFound() {
 ## API Routes
 
 ### Route Handlers
+
 ```tsx
 // app/api/users/route.ts
 import { NextRequest, NextResponse } from 'next/server'
@@ -219,18 +232,19 @@ import { NextRequest, NextResponse } from 'next/server'
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams
   const query = searchParams.get('query')
-  
+
   return NextResponse.json({ users: [] })
 }
 
 export async function POST(request: NextRequest) {
   const body = await request.json()
-  
+
   return NextResponse.json({ success: true })
 }
 ```
 
 ### Middleware
+
 ```tsx
 // middleware.ts
 import { NextResponse } from 'next/server'
@@ -251,6 +265,7 @@ export const config = {
 ## Deployment
 
 ### Vercel (Recommended)
+
 ```json
 // vercel.json
 {
@@ -262,6 +277,7 @@ export const config = {
 ```
 
 ### Docker
+
 ```dockerfile
 FROM node:18-alpine AS base
 
@@ -290,6 +306,7 @@ CMD ["node", "server.js"]
 ## Configuration
 
 ### next.config.js
+
 ```js
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -298,12 +315,12 @@ const nextConfig = {
     serverActions: true,
     serverComponentsExternalPackages: ['mongoose']
   },
-  
+
   // Image domains
   images: {
     domains: ['example.com', 'cdn.example.com']
   },
-  
+
   // Redirects
   async redirects() {
     return [
@@ -314,7 +331,7 @@ const nextConfig = {
       }
     ]
   },
-  
+
   // Headers
   async headers() {
     return [
@@ -334,6 +351,7 @@ module.exports = nextConfig
 ## Testing
 
 ### Unit Tests
+
 ```tsx
 // __tests__/page.test.tsx
 import { render, screen } from '@testing-library/react'
@@ -349,6 +367,7 @@ describe('Page', () => {
 ```
 
 ### E2E Tests
+
 ```tsx
 // e2e/homepage.spec.ts
 import { test, expect } from '@playwright/test'
@@ -362,6 +381,7 @@ test('homepage loads correctly', async ({ page }) => {
 ## Common Patterns
 
 ### Loading States
+
 ```tsx
 // app/dashboard/loading.tsx
 export default function Loading() {
@@ -370,6 +390,7 @@ export default function Loading() {
 ```
 
 ### Streaming
+
 ```tsx
 import { Suspense } from 'react'
 
@@ -389,16 +410,17 @@ export default function Page() {
 ```
 
 ### Server Actions
+
 ```tsx
 // app/actions.ts
 'use server'
 
 export async function createUser(formData: FormData) {
   const name = formData.get('name') as string
-  
+
   // Database operation
   await db.user.create({ data: { name } })
-  
+
   // Revalidate cache
   revalidatePath('/users')
 }
@@ -407,6 +429,7 @@ export async function createUser(formData: FormData) {
 ## Performance Monitoring
 
 ### Web Vitals
+
 ```tsx
 // app/layout.tsx
 import { Analytics } from '@vercel/analytics/react'
@@ -430,6 +453,7 @@ export default function RootLayout({
 ## Common Pitfalls
 
 ❌ **Don't:**
+
 - Use `useEffect` for data fetching in server components
 - Import client-only libraries in server components
 - Forget to add `'use client'` for interactive components
@@ -437,6 +461,7 @@ export default function RootLayout({
 - Expose sensitive environment variables to client
 
 ✅ **Do:**
+
 - Use server components by default
 - Implement proper error boundaries
 - Optimize images and fonts

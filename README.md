@@ -7,6 +7,7 @@ Automater is a CLI tool designed for [Hack Your Future](https://www.hackyourfutu
 While primarily built to support Hack Your Future assignments, Automater follows the Open-Closed Principle - stable core functionality that's easily extensible for other educational programs and use cases.
 
 ## What is Hack Your Future?
+
 [![Hack Your Future](https://img.youtube.com/vi/1D_qK6jWNAM/0.jpg)](https://www.youtube.com/watch?v=1D_qK6jWNAM)]
 
 ## What is Automater?
@@ -23,6 +24,7 @@ Think `npm create cloudflare@latest` but for any stack combination with intellig
 ## Quick Start
 
 ### Create a New Project
+
 ```bash
 # NextJS + TypeScript + MUI + Toolpad + Biome + Cloudflare
 npx automater create examples/opennext-mui-toolpad --features=mui-toolpad
@@ -36,28 +38,34 @@ npx automater create examples/opennext-mui-toolpad --features=mui-toolpad
 ![](docs/lighthouse.png)
 
 ### List Available Options
+
 ```bash
 automater list templates
 automater list features
 ```
+
 ## Supported Features
 
 > 📖 **Complete reference**: See [OPTIONS_OVERVIEW.md](docs/OPTIONS_OVERVIEW.md) for detailed feature descriptions, sources, and compatibility matrix.
 
 ### Security & Quality ⭐
+
 - **serverHardening** *(Default)*: Production-ready security headers following [OWASP guidelines](https://owasp.org/www-project-secure-headers/)
 - **biome** *(Default)*: Fast Rust-based linter/formatter from [Biome project](https://biomejs.dev/)
 
 **[🔒 Security Best Practices](docs/security-best-practices.md)** - Detailed security implementation and verification guide.
 
 ### Styling & UI
+
 - **mui**: Material-UI components with [official Next.js integration](https://mui.com/material-ui/integrations/nextjs/)
 - **mui-toolpad**: Complete admin dashboard with [MUI Toolpad Core](https://mui.com/toolpad/) - includes theme system, DataGrids, and CRUD pages
 
 ### Deployment
+
 - **cloudflare**: [Cloudflare Pages](https://developers.cloudflare.com/pages/) with Workers integration
 
 ### Default Features
+
 All templates include **serverHardening** and **biome** by default for production readiness and optimal developer experience.
 
 ## Coding Principles
@@ -81,6 +89,7 @@ Every generated project embeds these principles through code comments, structure
 ## How It Works
 
 ### Conflict Resolution
+
 Automater intelligently handles conflicts between tools:
 
 - Installing **MUI** removes Tailwind and offers CSS-in-JS alternatives
@@ -88,7 +97,9 @@ Automater intelligently handles conflicts between tools:
 - Framework-specific integrations follow official documentation
 
 ### Best Practices
+
 Every feature follows official documentation:
+
 - MUI installation uses the exact steps from [MUI Next.js guide](https://mui.com/material-ui/integrations/nextjs/)
 - Biome setup follows [Biome getting started](https://biomejs.dev/guides/getting-started/)
 - Vite configuration matches [Vite official templates](https://vitejs.dev/guide/)
@@ -96,6 +107,7 @@ Every feature follows official documentation:
 ## Development
 
 ### Prerequisites
+
 - Node.js 18+
 - pnpm (recommended) or npm
 
@@ -104,18 +116,21 @@ Every feature follows official documentation:
 We welcome contributions! Here's how to get started:
 
 ### Adding a New Feature
+
 1. Create feature config in `src/features/`
 2. Add template files in `templates/features/`
 3. Update conflict resolution rules if needed
 4. Add tests and documentation
 
 ### Adding a New Template
+
 1. Create template directory in `templates/`
 2. Add template config in `src/templates/`
 3. Test with various feature combinations
 4. Update documentation
 
 ### Contribution Guidelines
+
 - Follow existing code style (Biome formatting)
 - Add tests for new features
 - Update documentation
@@ -123,6 +138,7 @@ We welcome contributions! Here's how to get started:
 - Test conflict resolution scenarios
 
 ### Pull Request Process
+
 1. Fork the repository
 2. Create a feature branch: `git checkout -b feature/new-feature`
 3. Make your changes and add tests
@@ -140,6 +156,7 @@ This project is **free and open source**, but it wasn't free to build. If Automa
 **[💖 Sponsor on GitHub](https://github.com/sponsors/rkristelijn)**
 
 Your support helps:
+
 - Maintain and improve existing features
 - Add new templates and integrations
 - Provide community support

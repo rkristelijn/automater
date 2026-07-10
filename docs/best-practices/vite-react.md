@@ -5,7 +5,8 @@
 ## Project Structure
 
 ### Recommended Structure
-```
+
+```text
 src/
 ├── components/         # Reusable components
 │   ├── ui/            # Basic UI components
@@ -25,6 +26,7 @@ src/
 ## Vite Configuration
 
 ### vite.config.ts
+
 ```ts
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
@@ -32,7 +34,7 @@ import path from 'path'
 
 export default defineConfig({
   plugins: [react()],
-  
+
   // Path aliases
   resolve: {
     alias: {
@@ -41,14 +43,14 @@ export default defineConfig({
       '@/lib': path.resolve(__dirname, './src/lib')
     }
   },
-  
+
   // Development server
   server: {
     port: 3000,
     open: true,
     host: true // Expose to network
   },
-  
+
   // Build optimization
   build: {
     outDir: 'dist',
@@ -62,7 +64,7 @@ export default defineConfig({
       }
     }
   },
-  
+
   // Environment variables
   define: {
     __APP_VERSION__: JSON.stringify(process.env.npm_package_version)
@@ -73,6 +75,7 @@ export default defineConfig({
 ## Component Patterns
 
 ### Functional Components with TypeScript
+
 ```tsx
 interface ButtonProps {
   variant?: 'primary' | 'secondary'
@@ -102,6 +105,7 @@ export function Button({
 ```
 
 ### Custom Hooks
+
 ```tsx
 // hooks/useLocalStorage.ts
 import { useState, useEffect } from 'react'
@@ -134,6 +138,7 @@ export function useLocalStorage<T>(key: string, initialValue: T) {
 ## State Management
 
 ### Context + useReducer
+
 ```tsx
 // stores/AppContext.tsx
 import { createContext, useContext, useReducer, ReactNode } from 'react'
@@ -191,6 +196,7 @@ export function useApp() {
 ```
 
 ### Zustand (Recommended)
+
 ```tsx
 // stores/useStore.ts
 import { create } from 'zustand'
@@ -223,6 +229,7 @@ export const useStore = create<AppStore>()(
 ## Routing
 
 ### React Router v6
+
 ```tsx
 // App.tsx
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
@@ -248,6 +255,7 @@ export function App() {
 ```
 
 ### Protected Routes
+
 ```tsx
 // components/ProtectedRoute.tsx
 import { Navigate, useLocation } from 'react-router-dom'
@@ -272,6 +280,7 @@ export function ProtectedRoute({ children }: ProtectedRouteProps) {
 ## Data Fetching
 
 ### TanStack Query (Recommended)
+
 ```tsx
 // hooks/useUsers.ts
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
@@ -287,7 +296,7 @@ export function useUsers() {
 
 export function useCreateUser() {
   const queryClient = useQueryClient()
-  
+
   return useMutation({
     mutationFn: (userData: CreateUserData) => 
       api.post('/users', userData).then(res => res.data),
@@ -299,6 +308,7 @@ export function useCreateUser() {
 ```
 
 ### Custom Fetch Hook
+
 ```tsx
 // hooks/useFetch.ts
 import { useState, useEffect } from 'react'
@@ -343,6 +353,7 @@ export function useFetch<T>(url: string): FetchState<T> {
 ## Styling
 
 ### CSS Modules
+
 ```tsx
 // components/Button/Button.module.css
 .button {
@@ -381,6 +392,7 @@ export function Button({ variant = 'primary', children }: ButtonProps) {
 ```
 
 ### Styled Components
+
 ```tsx
 import styled from 'styled-components'
 
@@ -390,12 +402,12 @@ const StyledButton = styled.button<{ variant: 'primary' | 'secondary' }>`
   border-radius: 0.25rem;
   cursor: pointer;
   transition: all 0.2s;
-  
+
   background-color: ${props => 
     props.variant === 'primary' ? '#3b82f6' : '#6b7280'
   };
   color: white;
-  
+
   &:hover {
     opacity: 0.9;
   }
@@ -405,6 +417,7 @@ const StyledButton = styled.button<{ variant: 'primary' | 'secondary' }>`
 ## Performance Optimization
 
 ### Code Splitting
+
 ```tsx
 import { lazy, Suspense } from 'react'
 
@@ -425,6 +438,7 @@ export function App() {
 ```
 
 ### Memoization
+
 ```tsx
 import { memo, useMemo, useCallback } from 'react'
 
@@ -461,6 +475,7 @@ export const ExpensiveComponent = memo(function ExpensiveComponent({
 ## Testing
 
 ### Vitest Configuration
+
 ```ts
 // vitest.config.ts
 import { defineConfig } from 'vitest/config'
@@ -477,6 +492,7 @@ export default defineConfig({
 ```
 
 ### Component Testing
+
 ```tsx
 // components/Button.test.tsx
 import { render, screen, fireEvent } from '@testing-library/react'
@@ -492,7 +508,7 @@ describe('Button', () => {
   it('calls onClick when clicked', () => {
     const handleClick = vi.fn()
     render(<Button onClick={handleClick}>Click me</Button>)
-    
+
     fireEvent.click(screen.getByRole('button'))
     expect(handleClick).toHaveBeenCalledTimes(1)
   })
@@ -502,6 +518,7 @@ describe('Button', () => {
 ## Build & Deployment
 
 ### Environment Variables
+
 ```bash
 # .env
 VITE_API_URL=http://localhost:3001
@@ -519,6 +536,7 @@ const appTitle = import.meta.env.VITE_APP_TITLE
 ```
 
 ### Build Optimization
+
 ```json
 {
   "scripts": {
@@ -530,6 +548,7 @@ const appTitle = import.meta.env.VITE_APP_TITLE
 ```
 
 ### Static Deployment
+
 ```bash
 # Build for production
 npm run build
@@ -546,6 +565,7 @@ vercel --prod
 ## Common Patterns
 
 ### Error Boundaries
+
 ```tsx
 // components/ErrorBoundary.tsx
 import { Component, ErrorInfo, ReactNode } from 'react'
@@ -591,6 +611,7 @@ export class ErrorBoundary extends Component<Props, State> {
 ```
 
 ### Loading States
+
 ```tsx
 // components/LoadingSpinner.tsx
 export function LoadingSpinner() {
@@ -607,7 +628,7 @@ function UserList() {
 
   if (loading) return <LoadingSpinner />
   if (error) return <div>Error: {error}</div>
-  
+
   return (
     <ul>
       {users?.map(user => (
@@ -621,6 +642,7 @@ function UserList() {
 ## Common Pitfalls
 
 ❌ **Don't:**
+
 - Forget to cleanup useEffect subscriptions
 - Mutate state directly
 - Use index as key in dynamic lists
@@ -628,6 +650,7 @@ function UserList() {
 - Ignore TypeScript errors
 
 ✅ **Do:**
+
 - Use TypeScript for better DX
 - Implement proper error boundaries
 - Optimize bundle size with code splitting
