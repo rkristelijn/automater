@@ -15,12 +15,14 @@ Automater follows a **safe development workflow** that ensures every change is t
 ### Step-by-Step Process
 
 #### 1. Generate Example
+
 ```bash
 # Generate the target stack in examples/
 node dist/cli.js create examples/opennext-mui-toolpad --features=mui-toolpad,serverHardening,biome
 ```
 
 #### 2. Test & Fix in Examples
+
 ```bash
 cd examples/opennext-mui-toolpad
 npm install
@@ -35,13 +37,16 @@ npm run dev
 ```
 
 #### 3. Commit Working State
+
 ```bash
 git add examples/
 git commit -m "Working example: opennext-mui-toolpad with fixes"
 ```
 
 #### 4. Retrofit Generator Code
+
 Update the generator templates and code to match the working example:
+
 ```bash
 # Update templates in src/templates/
 # Update feature modules in src/features/
@@ -49,6 +54,7 @@ Update the generator templates and code to match the working example:
 ```
 
 #### 5. Regenerate and Verify
+
 ```bash
 # Remove the example
 rm -rf examples/opennext-mui-toolpad

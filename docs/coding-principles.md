@@ -5,6 +5,7 @@
 These principles help any developer write code that's clear, maintainable, and works well with others.
 
 ### RTFM (Respect The Framework's Model)
+
 **Follow the framework's intended way of doing things.**
 
 - Use React hooks patterns, not class components when the docs recommend hooks
@@ -14,6 +15,7 @@ These principles help any developer write code that's clear, maintainable, and w
 **Why**: Frameworks are designed by experts who've solved common problems. Fighting the framework creates bugs and confusion.
 
 ### C4C (Coding For Clarity)
+
 **Write code that's easy to read and understand.**
 
 - Use descriptive variable names: `userEmail` not `ue`
@@ -23,6 +25,7 @@ These principles help any developer write code that's clear, maintainable, and w
 **Why**: 80% of programming is reading existing code. Clear code saves everyone time.
 
 ### C4I (Code for Inclusivity)
+
 **Make your code accessible to new team members.**
 
 - Keep folder structure logical (features together first, then think of types together, it just scales better)
@@ -32,6 +35,7 @@ These principles help any developer write code that's clear, maintainable, and w
 **Why**: Teams change. New developers should be able to contribute quickly.
 
 ### KISS (Keep It Simple Stupid)
+
 **Choose the simplest solution that works.**
 
 - Don't build abstractions until you need them twice
@@ -41,6 +45,7 @@ These principles help any developer write code that's clear, maintainable, and w
 **Why**: Simple code has fewer bugs and is easier to maintain.
 
 ### YAGNI (You Aren't Gonna Need It)
+
 **Don't build features until they're actually needed.**
 
 - Don't add configuration options "just in case"
@@ -50,6 +55,7 @@ These principles help any developer write code that's clear, maintainable, and w
 **Why**: Unused features become technical debt and maintenance burden.
 
 ### HIPI (Hide Implementation, Present Interface)
+
 **Encapsulate complexity behind clear interfaces.**
 
 ```javascript
@@ -63,6 +69,7 @@ if (user.canAccessDashboard()) { ... }
 **Why**: Clean interfaces make refactoring safer and code more testable.
 
 ### NBI (Naming by Intention)
+
 **Names should clearly express purpose and behavior.**
 
 ```javascript
@@ -119,12 +126,14 @@ The original 12-factor app has evolved to 15 factors for modern cloud-native app
 ### When to Use Enterprise Principles
 
 **Use enterprise principles when:**
+
 - Code will be maintained for 3+ years
 - Multiple teams will work on the codebase
 - The application is business-critical
 - You need to onboard new developers regularly
 
 **Stick to core principles when:**
+
 - Building prototypes or MVPs
 - Working on personal projects
 - Time-to-market is critical
