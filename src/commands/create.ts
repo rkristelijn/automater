@@ -72,10 +72,28 @@ export async function createProject(projectName: string, options: CreateOptions)
     }
   }
 
+  // pnpm 11+ refuses native build scripts until approved (ERR_PNPM_IGNORED_BUILDS)
+  // and ships an invalid pnpm-workspace.yaml placeholder. Approve them so the
+  // generated project installs and runs out of the box.
+  await approveBuilds(projectName);
+
   if (start) {
     console.log(chalk.blue(`🚀 Starting development server...`));
     await startDevServer(projectName, open);
   }
+}
+
+async function approveBuilds(projectName: string): Promise<void> {
+  return new Promise((resolve) => {
+    const proc = spawn('pnpm', ['approve-builds', '--all'], {
+      cwd: projectName,
+      stdio: 'inherit'
+    });
+    // Best-effort: don't fail the whole scaffold if pnpm isn't the PM or the
+    // command is unavailable. The project still works after a manual install.
+    proc.on('close', () => resolve());
+    proc.on('error', () => resolve());
+  });
 }
 
 async function createCloudflareNextJs(
@@ -123,6 +141,18 @@ async function createCloudflareNextJs(
 }
 
 async function fallbackToNpm(projectName: string, packages: string[]): Promise<void> {
+  // Issue #4: pnpm lays down a symlink store under node_modules/.pnpm. Running
+  // `npm install` over that store makes npm's arborist crash while deduping a
+  // symlinked node ("Cannot read properties of null (reading 'matches')").
+  // Start npm from a clean tree so it never sees the pnpm symlink farm.
+  for (const artifact of ['node_modules', 'pnpm-lock.yaml']) {
+    const target = `${projectName}/${artifact}`;
+    if (fs.existsSync(target)) {
+      console.log(chalk.gray(`🧹 Removing pnpm artifact before npm install: ${artifact}`));
+      fs.rmSync(target, { recursive: true, force: true });
+    }
+  }
+
   return new Promise((resolve, reject) => {
     const installProcess = spawn('npm', ['install', ...packages], {
       cwd: projectName,
@@ -158,7 +188,8 @@ async function installMUI(projectName: string): Promise<void> {
         console.log(chalk.green('✅ MUI packages installed successfully!'));
         configureMUI(projectName).then(resolve).catch(reject);
       } else {
-        console.log(chalk.yellow('⚠️  pnpm failed, falling back to npm...'));
+        console.log(chalk.yellow(`⚠️  pnpm install exited with code ${code}. This is often an ignored-build-scripts approval (ERR_PNPM_IGNORED_BUILDS) — see the pnpm output above.`));
+        console.log(chalk.yellow('   Falling back to npm on a clean tree...'));
         fallbackToNpm(projectName, ['@mui/material', '@mui/material-nextjs', '@emotion/cache', '@emotion/styled'])
           .then(() => configureMUI(projectName))
           .then(resolve)
