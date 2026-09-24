@@ -1,0 +1,16 @@
+# keur policy for automater
+#
+# Real secrets must still BLOCK — we keep the default thresholds. We only
+# exclude machine-generated files that produce false positives (e.g. the
+# Cloudflare Workers type definitions in generated `cloudflare-env.d.ts`,
+# whose JSDoc @example hex strings trip the Cloudflare-API-key rule).
+#
+# Resolution order (later wins): built-in < ~/.config/keur < <repo>/keur.toml
+version = "0.1.0"
+
+# Generated / vendored artefacts — not authored code, exclude from scanning.
+exclude_paths = [
+  "cloudflare-env.d.ts",
+  "examples/",
+  "dist/",
+]
